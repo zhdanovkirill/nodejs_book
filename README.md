@@ -1,25 +1,45 @@
 ---
-description: n xcn klnfgklnfgklbngf;n
+description: Ласкаво просимо до курсу з Node JS
 ---
 
 # Node JS
 
-## Welcome to MyAPI
+## Початок&#x20;
 
-Welcome to MyAPI! Here you'll find all the documentation you need to get up and running with the MyAPI API.
-
-## Want to jump right in?
-
-Feeling like an eager beaver? Jump in to the quick start docs and get making your first request:
+Для встановлення всього необхідного переходь на сторінку quick start.
 
 {% content-ref url="node-js/quick-start.md" %}
 [quick-start.md](node-js/quick-start.md)
 {% endcontent-ref %}
 
-## Want to deep dive?
+## Хочеш дізнатись як працюе Node JS?
 
-Dive a little deeper and start exploring our API reference to get an idea of everything that's possible with the API:
+Тоді тобі до Intro роздылу:
 
-{% content-ref url="broken-reference" %}
-[Broken link](broken-reference)
+{% content-ref url="node-js/intro.md" %}
+[intro.md](node-js/intro.md)
+{% endcontent-ref %}
+
+## Перше занняття
+
+Тобі сюди, якще вже не терпиться почати і все оточення вже налаштоване.
+
+{% content-ref url="node-js/fundamentalnyi-node.js.md" %}
+[fundamentalnyi-node.js.md](node-js/fundamentalnyi-node.js.md)
+{% endcontent-ref %}
+
+## Домашка
+
+Дивись сюди
+
+{% content-ref url="home-work.md" %}
+[home-work.md](home-work.md)
+{% endcontent-ref %}
+
+## Модульне завдання
+
+Жмякай нижче
+
+{% content-ref url="module.md" %}
+[module.md](module.md)
 {% endcontent-ref %}
