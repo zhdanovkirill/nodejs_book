@@ -3,7 +3,7 @@
 * [Node JS](README.md)
   * [Quick Start](node-js/quick-start.md)
   * [Intro](node-js/intro.md)
-  * [Фундаментальный Node.js](node-js/fundamentalnyi-node.js.md)
+  * [Lesson 1 - Фундаментальний Node.js](node-js/lesson-1-fundamentalnii-node.js.md)
   * [Потоки данных](node-js/potoki-dannykh.md)
   * [Юнит- и функциональное тестирование](node-js/yunit-i-funkcionalnoe-testirovanie.md)
   * [Серверные фреймворки](node-js/servernye-freimvorki/README.md)

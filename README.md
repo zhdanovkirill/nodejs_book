@@ -24,8 +24,8 @@ description: Ласкаво просимо до курсу з Node JS
 
 Тобі сюди, якще вже не терпиться почати і все оточення вже налаштоване.
 
-{% content-ref url="node-js/fundamentalnyi-node.js.md" %}
-[fundamentalnyi-node.js.md](node-js/fundamentalnyi-node.js.md)
+{% content-ref url="node-js/lesson-1-fundamentalnii-node.js.md" %}
+[lesson-1-fundamentalnii-node.js.md](node-js/lesson-1-fundamentalnii-node.js.md)
 {% endcontent-ref %}
 
 ## Домашка

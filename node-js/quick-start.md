@@ -1,128 +1,31 @@
 # Quick Start
 
-{% hint style="info" %}
-**Good to know:** A quick start guide can be good to help folks get up and running with your API in a few steps. Some people prefer diving in with the basics rather than meticulously reading every page of documentation!
+Установка Node js занимает всего несколько минут независимо от операционной системы. Сперва перейдите на [официальный сайт](https://nodejs.org/en/) платформы, где автоматически определяется тип и разрядность вашей операционной системы. На сайте предлагается установить Node js либо самой последней (Current), либо стабильной версии (LTS).![](https://webdraftt.com/assets/images/articles/setup-1.png)
+
+Стабільна LTS версія в першу чергу призначена для корпоративної розробки і в основному використовується IT-компаніями, у яких часто оновлення версій пов'язане з певними труднощами в галузі закупівель або згідно умови договорів зі своїми клієнтами.
+
+Версія Current має всі останні напрацювання та оновлення платформи, але вона може містити помилки. Тому рекомендується встановити Node js саме версії LTS
+
+Для операційної системи Windows або MacOS установка Node js здійснюється завантаженим дистрибутивом у форматі msi або pkg відповідно. У Unix-системах ефективнішим буде використання пакетного менеджера.
+
+<figure><img src="../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+
+{% hint style="warning" %}
+Якщо вам необхідно встановити Node js на систему, відмінну від тієї, з якою ви зайшли на офіційний сайт, перейдіть в розділ[`Downloads`](https://nodejs.org/en/download/).
 {% endhint %}
 
-## Get your API keys
-
-Your API requests are authenticated using API keys. Any request that doesn't include an API key will return an error.
-
-You can generate an API key from your Dashboard at any time.
-
-## Install the library
-
-The best way to interact with our API is to use one of our official libraries:
-
-{% tabs %}
-{% tab title="Node" %}
-```
-# Install via NPM
-npm install --save my-api
-```
-{% endtab %}
-
-{% tab title="Python" %}
-```
-# Install via pip
-pip install --upgrade myapi
-```
-{% endtab %}
-{% endtabs %}
-
 {% hint style="info" %}
-**Good to know:** Using tabs to separate out different languages is a great way to present technical examples or code documentation without cramming your docs with extra sections or pages per language.
+Для контролю і управлінням версіями можна встановити [NVM](https://github.com/nvm-sh/nvm).
+
+За допомогою цього інструменту можна швидко встановлювати/змінювати/ видаляти будь які версії node.
 {% endhint %}
 
-## Make your first request
+<figure><img src="../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
 
-To make your first request, send an authenticated request to the pets endpoint. This will create a `pet`, which is nice.
+Щоб переконатися, що втановлення Node js пройшло успішно, виконайте в команду.
 
-{% swagger baseUrl="https://api.myapi.com/v1" method="post" path="/pet" summary="Create pet." %}
-{% swagger-description %}
-Creates a new pet.
-{% endswagger-description %}
-
-{% swagger-parameter in="body" name="name" required="true" type="string" %}
-The name of the pet
-{% endswagger-parameter %}
-
-{% swagger-parameter in="body" name="owner_id" required="false" type="string" %}
-The 
-
-`id`
-
- of the user who owns the pet
-{% endswagger-parameter %}
-
-{% swagger-parameter in="body" name="species" required="false" type="string" %}
-The species of the pet
-{% endswagger-parameter %}
-
-{% swagger-parameter in="body" name="breed" required="false" type="string" %}
-The breed of the pet
-{% endswagger-parameter %}
-
-{% swagger-response status="200" description="Pet successfully created" %}
-```javascript
-{
-    "name"="Wilson",
-    "owner": {
-        "id": "sha7891bikojbkreuy",
-        "name": "Samuel Passet",
-    "species": "Dog",}
-    "breed": "Golden Retriever",
-}
 ```
-{% endswagger-response %}
-
-{% swagger-response status="401" description="Permission denied" %}
-
-{% endswagger-response %}
-{% endswagger %}
-
-{% hint style="info" %}
-**Good to know:** You can use the API Method block to fully document an API method. You can also sync your API blocks with an OpenAPI file or URL to auto-populate them.
-{% endhint %}
-
-Take a look at how you might call this method using our official libraries, or via `curl`:
-
-{% tabs %}
-{% tab title="curl" %}
+node -v
 ```
-curl https://api.myapi.com/v1/pet  
-    -u YOUR_API_KEY:  
-    -d name='Wilson'  
-    -d species='dog'  
-    -d owner_id='sha7891bikojbkreuy'  
-```
-{% endtab %}
 
-{% tab title="Node" %}
-```javascript
-// require the myapi module and set it up with your API key
-const myapi = require('myapi')(YOUR_API_KEY);
-
-const newPet = away myapi.pet.create({
-    name: 'Wilson',
-    owner_id: 'sha7891bikojbkreuy',
-    species: 'Dog',
-    breed: 'Golden Retriever',
-})
-```
-{% endtab %}
-
-{% tab title="Python" %}
-```python
-// Set your API key before making the request
-myapi.api_key = YOUR_API_KEY
-
-myapi.Pet.create(
-    name='Wilson',
-    owner_id='sha7891bikojbkreuy',
-    species='Dog',
-    breed='Golden Retriever',
-)
-```
-{% endtab %}
-{% endtabs %}
+Якщо ви все зробили правильно, в консолі з'явиться номер версії Node.js.
