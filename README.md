@@ -14,7 +14,7 @@ description: Ласкаво просимо до курсу з Node JS
 
 ## Хочеш дізнатись як працюе Node JS?
 
-Тоді тобі до Intro роздылу:
+Тоді тобі до Intro розділу:
 
 {% content-ref url="node-js/intro.md" %}
 [intro.md](node-js/intro.md)
