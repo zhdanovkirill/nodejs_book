@@ -11,7 +11,7 @@
     * [Meteor.js](node-js/servernye-freimvorki/meteor.js.md)
     * [Nest.js](node-js/servernye-freimvorki/nest.js.md)
     * [Express.js](node-js/servernye-freimvorki/express.js.md)
-  * [Бази даних](node-js/bazi-danikh.md)
+  * [Бази даних](node-js/bazy-dannykh.md)
   * [Пользователи, авторизация](node-js/polzovateli-avtorizaciya.md)
   * [Улучшаем приложение](node-js/uluchshaem-prilozhenie.md)
   * [Чаты, непрерывная подгрузка и обмен данными](node-js/chaty-nepreryvnaya-podgruzka-i-obmen-dannymi.md)
