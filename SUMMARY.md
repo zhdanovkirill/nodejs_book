@@ -4,7 +4,7 @@
   * [Quick Start](node-js/quick-start.md)
   * [Intro](node-js/intro.md)
   * [Lesson 1 - Фундаментальний Node.js](node-js/lesson-1-fundamentalnii-node.js.md)
-  * [Потоки данных](node-js/potoki-dannykh.md)
+  * [Lesson 2 - Потоки данных](node-js/lesson-2-potoki-dannykh.md)
   * [Юніт- та функціональне тестування](node-js/yunit-i-funkcionalnoe-testirovanie.md)
   * [Серверні фреймворки](node-js/servernye-freimvorki/README.md)
     * [Koa.js](node-js/servernye-freimvorki/koa.js.md)

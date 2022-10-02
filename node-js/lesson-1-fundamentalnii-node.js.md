@@ -522,11 +522,235 @@ node hello.js
 
 Ми налаштували сервер і отримали від нього першу відповідь.
 
+Тепер розглянемо деякі варіациї
+
+{% tabs %}
+{% tab title="TextRes" %}
+{% code lineNumbers="true" %}
+```javascript
+import * as http from "http";
+
+const host = 'localhost';
+const port = 8000;
+
+const requestListener = function (req, res) {
+        res.writeHead(200);
+        res.end("My first server!");
+};
+
+const server = http.createServer(requestListener);
+
+server.listen(port, host, () => {
+    console.log(`Server is running on http://${host}:${port}`);
+});
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="Second Tab" %}
+<pre class="language-javascript" data-line-numbers><code class="lang-javascript">const requestListener = function (req, res) {
+<strong>        res.setHeader("Content-Type", "application/json");
+</strong>        res.writeHead(200);
+        res.end(`{"message": "This is a JSON response"}`);
+};</code></pre>
+{% endtab %}
+
+{% tab title="CSVDataRes" %}
+{% code lineNumbers="true" %}
+```javascript
+ const requestListener = function (req, res) {
+        res.setHeader("Content-Type", "text/csv");
+        res.setHeader("Content-Disposition", "attachment;filename=oceanpals.csv");
+        res.writeHead(200);
+        res.end(`id,name,email\n1,Kyrylo,kyrylo@gmail.com`);
+  };
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="HTMLRes" %}
+{% code lineNumbers="true" %}
+```javascript
+const requestListener = function (req, res) {
+    res.setHeader("Content-Type", "text/html");
+    res.writeHead(200);
+    res.end(`<html><body><h1>This is HTML</h1></body></html>`);
+};
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="FileHTML" %}
+{% code lineNumbers="true" %}
+```javascript
+import * as http from "http";
+import {readFile} from 'node:fs';
+
+const host = 'localhost';
+const port = 8000;
+
+const requestListener = function (req, res) {
+    readFile(process.cwd() + "/3src/resource/index.html", 'utf8', ((err, data) => {
+        if (err) {
+            res.setHeader("Content-Type", "application/json");
+            res.writeHead(500);
+            console.log(err)
+            res.end(JSON.stringify(err));
+            return;
+        }
+        sendFile(data, res)
+    }));
+};
+
+function sendFile(contents, res) {
+    res.setHeader("Content-Type", "text/html");
+    res.writeHead(200);
+    res.end(contents);
+}
+
+const server = http.createServer(requestListener);
+
+server.listen(port, host, () => {
+    console.log(`Server is running on http://${host}:${port}`);
+});
+```
+{% endcode %}
+{% endtab %}
+{% endtabs %}
+
+
+
+Останный приклад можно вдосконалити. Замість того, щоб завантажувати сторінку HTML для кожного запиту, ми завантажимо її лише один раз на самому початку. Запит повертатиме дані, завантажені нами під час запуску.
+
+{% code lineNumbers="true" %}
+```javascript
+import * as http from "http";
+import {readFile} from 'node:fs';
+
+const host = 'localhost';
+const port = 8000;
+
+let indexFile;
+
+const requestListener = function (req, res) {
+    res.setHeader("Content-Type", "text/html");
+    res.writeHead(200);
+    res.end(indexFile);
+};
+
+const server = http.createServer(requestListener);
+
+
+readFile(process.cwd() + "/src/resource/index.html", 'utf8', ((err, data) => {
+    if (err) {
+        console.error(`Could not read index.html file: ${err}`);
+        process.exit(1);
+        return;
+    }
+    indexFile = data;
+    server.listen(port, host, () => {
+        console.log(`Server is running on http://${host}:${port}`);
+    });
+}));
+```
+{% endcode %}
+
+Код, який зчитує файл, схожий на написаний нами при першій спробі. Однак при успішному читанні файлу ми можемо зберегти його вміст у глобальній змінній **indexFile**. Ми запустимо сервер із методом **listen()**. Головне – завантажити файл до запуску сервера. Так функція **requestListener()** гарантовано повертає сторінку HTML, оскільки змінна indexFile не порожня.
+
+Блок обробки помилок також змінився. Якщо файл не вдається завантажити, ми записуємо помилку та виводимо її на консоль. Потім закриваємо програму Node.js за допомогою функції exit() без запуску сервера. Так ми бачимо, чому не вдалося прочитати файл і можемо вирішити проблему і знову запустити сервер.
+
+Ми створили різні веб-сервери, які повертають користувачу різні типи даних. Поки що ми не використовували дані запитів для визначення конкретного контенту, що повертається. Нам потрібно використовувати дані запитів при налаштуванні маршрутів або шляхів сервера Node.js, тому тепер ми подивимося, як це працює.
+
+### Налаштування серверу з декількома кінцевими точками
+
+Більшість відвідуваних нами сайтів і використовуваних нами API мають кілька кінцевих точок, що дозволяє отримувати доступ до різних ресурсів.
+
+Гарним прикладом є система управління книгами, яка може використовуватись у бібліотеці
+
+В якості вмістилища використаемо глобальні змінні
+
+```javascript
+const books = JSON.stringify([
+    { title: "The Alchemist", author: "Paulo Coelho", year: 1988 },
+    { title: "The Prophet", author: "Kahlil Gibran", year: 1923 }
+]);
+
+const authors = JSON.stringify([
+    { name: "Paulo Coelho", countryOfBirth: "Brazil", yearOfBirth: 1947 },
+    { name: "Kahlil Gibran", countryOfBirth: "Lebanon", yearOfBirth: 1883 }
+]);
+```
+
+Напишемо код який певерне з серверу перелік книг
+
+{% code lineNumbers="true" %}
+```javascript
+import * as http from "http";
+import {readFile} from 'node:fs';
+
+const host = 'localhost';
+const port = 8000;
+
+let indexFile;
+
+const books = JSON.stringify([
+    {title: "The Alchemist", author: "Paulo Coelho", year: 1988},
+    {title: "The Prophet", author: "Kahlil Gibran", year: 1923}
+]);
+
+const authors = JSON.stringify([
+    {name: "Paulo Coelho", countryOfBirth: "Brazil", yearOfBirth: 1947},
+    {name: "Kahlil Gibran", countryOfBirth: "Lebanon", yearOfBirth: 1883}
+]);
+
+const requestListener = function (req, res) {
+    try {
+        switch (req.url) {
+            case "/books":
+                res.setHeader("Content-Type", "application/json");
+                res.writeHead(200);
+                res.end(books);
+                break
+            case "/" :
+                res.setHeader("Content-Type", "text/html");
+                res.writeHead(200);
+                res.end(indexFile);
+                break
+            default:
+                res.setHeader("Content-Type", "application/json");
+                res.writeHead(404);
+                res.end(`{code: 404, message: "Resource not found"}`);
+        }
+    } catch (e) {
+        res.setHeader("Content-Type", "application/json");
+        res.writeHead(500);
+        res.end(JSON.stringify(e));
+    }
+}
+
+const server = http.createServer(requestListener);
+
+
+readFile(process.cwd() + "/src/resource/index.html", 'utf8', ((err, data) => {
+    if (err) {
+        console.error(`Could not read index.html file: ${err}`);
+        process.exit(1);
+        return;
+    }
+    indexFile = data;
+    server.listen(port, host, () => {
+        console.log(`Server is running on http://${host}:${port}`);
+    });
+}));
+
+```
+{% endcode %}
+
+Як результат ми навчились стовювати сервер з декількома кінцевими точками і різними типами данних. Цей підхід можно використати для додатковії обробки методів.
+
 ### Асинхронність у JavaScript
 
-
-
-JavaScript — однопоточна синхронна мова. Рядки коду, написанного на JS, виконуються в порядку, в якому вони присутні в тексті, один за одним.
+Як було сказано, JavaScript — однопоточна синхронна мову. Рядки коду, написаного на JS, виконуються в порядку, в якому вони присутні в тексті, один за одним.
 
 Але JavaScript було створено для використання у браузерах. Його основним завданням на самому початку була організація обробки подій, пов'язаних з діяльністю користувача. Наприклад - це такі події, як onClick, onMouseOver, onChange, onSubmit, і так далі. Як вирішувати такі завдання в рамках синхронної моделі програмування?
 
@@ -574,6 +798,6 @@ const doSomething = async () => {
 }
 ```
 
-
+Хоч JavaScript — однопоточна синхронна мову, ми можемо використовувати інструменти які дозволяють зробити її багатозадачною.
 
 *
