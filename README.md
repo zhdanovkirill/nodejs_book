@@ -32,14 +32,14 @@ description: Ласкаво просимо до курсу з Node JS
 
 Дивись сюди
 
-{% content-ref url="home-work.md" %}
-[home-work.md](home-work.md)
+{% content-ref url="home-work/home-work-1.md" %}
+[home-work-1.md](home-work/home-work-1.md)
 {% endcontent-ref %}
 
 ## Модульне завдання
 
 Жмякай нижче
 
-{% content-ref url="module.md" %}
-[module.md](module.md)
+{% content-ref url="broken-reference" %}
+[Broken link](broken-reference)
 {% endcontent-ref %}

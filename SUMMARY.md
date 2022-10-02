@@ -16,5 +16,6 @@
   * [Улучшаем приложение](node-js/uluchshaem-prilozhenie.md)
   * [Чаты, непрерывная подгрузка и обмен данными](node-js/chaty-nepreryvnaya-podgruzka-i-obmen-dannymi.md)
   * [Развёртывание и запуск приложения](node-js/razvyortyvanie-i-zapusk-prilozheniya.md)
-* [Home Work](home-work.md)
-* [Module](module.md)
+* [Home Work](home-work/README.md)
+  * [Home Work 1](home-work/home-work-1.md)
+  * [Home Work 2](home-work/home-work-2.md)
