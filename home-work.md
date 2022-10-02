@@ -37,22 +37,26 @@ function sum(arr) {
 структура \
 
 
-{% swagger src=".gitbook/assets/swagger (3).yaml" path="/user/{username}" method="get" %}
-[swagger (3).yaml](<.gitbook/assets/swagger (3).yaml>)
+{% swagger src=".gitbook/assets/swaggerHW1.yaml" path="/user" method="get" %}
+[swaggerHW1.yaml](.gitbook/assets/swaggerHW1.yaml)
 {% endswagger %}
 
-{% swagger src=".gitbook/assets/swagger (3).yaml" path="/user/createWithArray" method="post" %}
-[swagger (3).yaml](<.gitbook/assets/swagger (3).yaml>)
+{% swagger src=".gitbook/assets/swaggerHW1.yaml" path="/user" method="post" %}
+[swaggerHW1.yaml](.gitbook/assets/swaggerHW1.yaml)
 {% endswagger %}
 
-{% swagger src=".gitbook/assets/swagger (3).yaml" path="/user" method="post" %}
-[swagger (3).yaml](<.gitbook/assets/swagger (3).yaml>)
+{% swagger src=".gitbook/assets/swaggerHW1.yaml" path="/user/createWithArray" method="post" %}
+[swaggerHW1.yaml](.gitbook/assets/swaggerHW1.yaml)
 {% endswagger %}
 
-{% swagger src=".gitbook/assets/swagger (2).yaml" path="/user/{username}" method="put" %}
-[swagger (2).yaml](<.gitbook/assets/swagger (2).yaml>)
+{% swagger src=".gitbook/assets/swaggerHW1.yaml" path="/user/{username}" method="get" %}
+[swaggerHW1.yaml](.gitbook/assets/swaggerHW1.yaml)
 {% endswagger %}
 
-{% swagger src=".gitbook/assets/swagger (2).yaml" path="/user/{username}" method="delete" %}
-[swagger (2).yaml](<.gitbook/assets/swagger (2).yaml>)
+{% swagger src=".gitbook/assets/swaggerHW1.yaml" path="/user/{username}" method="put" %}
+[swaggerHW1.yaml](.gitbook/assets/swaggerHW1.yaml)
+{% endswagger %}
+
+{% swagger src=".gitbook/assets/swaggerHW1.yaml" path="/user/{username}" method="delete" %}
+[swaggerHW1.yaml](.gitbook/assets/swaggerHW1.yaml)
 {% endswagger %}
