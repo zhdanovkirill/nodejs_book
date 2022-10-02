@@ -35,37 +35,24 @@ function sum(arr) {
 
 3\) Створити запити для створення/оновлення/видалення.читання (GET, POST, PUT, DELETE )\
 структура \
-Наприклаc
 
-{% tabs %}
-{% tab title="indnex.js" %}
-```
-// Some code
-```
-{% endtab %}
 
-{% tab title="user.js" %}
-```
-// Some code
-```
-{% endtab %}
-{% endtabs %}
+{% swagger src=".gitbook/assets/swagger (3).yaml" path="/user/{username}" method="get" %}
+[swagger (3).yaml](<.gitbook/assets/swagger (3).yaml>)
+{% endswagger %}
 
-```javascript
-const requestListener = function (req, res) {
-    res.setHeader("Content-Type", "application/json");
-    switch (req.url) {
-        case "/books":
-            res.writeHead(200);
-            res.end(books);
-            break
-        case "/authors":
-            res.writeHead(200);
-            res.end(authors);
-            break
-        default:
-            res.writeHead(404);
-            res.end(JSON.stringify({error:"Resource not found"}));
-    }
-}
-```
+{% swagger src=".gitbook/assets/swagger (3).yaml" path="/user/createWithArray" method="post" %}
+[swagger (3).yaml](<.gitbook/assets/swagger (3).yaml>)
+{% endswagger %}
+
+{% swagger src=".gitbook/assets/swagger (3).yaml" path="/user" method="post" %}
+[swagger (3).yaml](<.gitbook/assets/swagger (3).yaml>)
+{% endswagger %}
+
+{% swagger src=".gitbook/assets/swagger (2).yaml" path="/user/{username}" method="put" %}
+[swagger (2).yaml](<.gitbook/assets/swagger (2).yaml>)
+{% endswagger %}
+
+{% swagger src=".gitbook/assets/swagger (2).yaml" path="/user/{username}" method="delete" %}
+[swagger (2).yaml](<.gitbook/assets/swagger (2).yaml>)
+{% endswagger %}
