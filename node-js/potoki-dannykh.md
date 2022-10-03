@@ -183,3 +183,162 @@ readStream.pipe(writeStream)
 
 Механіка внутрішньої буферизації є внутрішньою деталлю реалізації і може бути змінена в будь-який час. Однак для деяких розширених реалізацій внутрішні буфери можна отримати за допомогою `writable.writableBuffer` або `readable.readableBuffer`. Використання цих незадокументованих властивостей не рекомендується.
 
+{% code lineNumbers="true" %}
+```javascript
+import {http} from 'node:http';
+
+const server = http.createServer((req, res) => {
+   // `req` is an http.IncomingMessage, which is a readable stream.
+   // `res` is an http.ServerResponse, which is a writable stream.
+
+   let body = '';
+   // Get the data as utf8 strings.
+   // If an encoding is not set, Buffer objects will be received.
+   req.setEncoding('utf8');
+
+   // Readable streams emit 'data' events once a listener is added.
+   req.on('data', (chunk) => {
+       body += chunk;
+   });
+
+   // The 'end' event indicates that the entire body has been received.
+   req.on('end', () => {
+       try {
+           const data = JSON.parse(body);
+           // Write back something interesting to the user:
+           res.write(typeof data);
+           res.end();
+       } catch (er) {
+           // uh oh! bad json!
+           res.statusCode = 400;
+           return res.end(`error: ${er.message}`);
+       }
+   });
+});
+
+server.listen(1337);
+
+// $ curl localhost:1337 -d "{}"
+// object
+// $ curl localhost:1337 -d "\"foo\""
+// string
+// $ curl localhost:1337 -d "not json"
+// error: Unexpected token o in JSON at position 1
+```
+{% endcode %}
+
+Записуванні потоки (такі як res у прикладі) надають такі методи, як write() і end(), які використовуються для запису даних у потік.
+
+Доступні для читання потоки використовують _API_ _EventEmitter_ для сповіщення коду програми, коли дані доступні для читання з потоку. Доступні дані можна зчитувати з потоку різними способами.
+
+Потоки, доступні для запису та читання, використовують _API_ _EventEmitter_ різними способами для передачі поточного стану потоку.
+
+Потоки _Duplex_ і _Transform_ доступні як для запису, так і для читання.
+
+Програми, які або записують дані в потік, або споживають дані з потоку, не зобов’язані безпосередньо впроваджувати потокові інтерфейси, і, як правило, не буде причин викликати `import 'node:stream'`.
+
+Розробники, які бажають реалізувати нові типи потоків, повинні звернутися до розділу [**API for stream implementers**](https://nodejs.org/api/stream.html#api-for-stream-implementers).
+
+## **Тип даних Buffer для бінарних даних.**
+
+Буфер є деякою областю пам'яті, яка використовується для тимчасового зберігання потоків даних операцій введення/виводу, зокрема це стосується файлової системи та роботи з мережею. У Node.js робота з буфером здійснюється за допомогою глобального класу _**Buffer**_, який дозволяє обробляти потоки бінарних даних. Оскільки клас глобальний, він може бути використаний у будь-якому місці програми без імпорту самого модуля.
+
+**Приклад:**
+
+Типовий приклад, в якому ви можете зіткнутися з буфером у дії, - це перегляд відео в інтернеті. Якщо ваше інтернет-з'єднання досить швидке, швидкість потоку досить висока для того, щоб негайно заповнити буфер відеопрогравача і дозволити показати відео, потім заповнити наступний буфер, і відправити його на перегляд - і так доти, доки передача відео не завершиться. Тут показаний приклад системи, де дані прибувають швидше, ніж обробляються.
+
+<figure><img src="https://lh4.googleusercontent.com/s0ba6EbyttO2ugWJp5TQxR8jyXjDYKgI6aD5viXbxPt2HoxaojoY8NUfBqR9ESc4OBXlEJj-xV-ogavwO6ZOUt9naYmWiS4kHoQwZLny8_jC8gqA49EARlTXjq68dZNBBkBmGB7XN4uZUhToQDjOIbswqKl0W7cSVSjahbo5PgRC0JW8EsLuD9r3WQ" alt=""><figcaption></figcaption></figure>
+
+### Створення
+
+Для створення порожнього буфера розміром 10 байт використовуйте метод `Buffer.alloc()`.
+
+{% code lineNumbers="true" %}
+```javascript
+Buffer.alloc(10); //<Buffer 00 00 00 00 00 00 00 00 00 00>
+```
+{% endcode %}
+
+Після створення буфера його розмір не можна змінити.
+
+Розмір буфера зберігається як `length`.
+
+{% code lineNumbers="true" %}
+```javascript
+let buffer = Buffer.alloc(3);
+buffer.length; //3
+```
+{% endcode %}
+
+Щоб заповнити створюваний буфер значенням за замовчуванням, просто передайте це значення `Buffer.alloc()` другим параметром
+
+{% code lineNumbers="true" %}
+```javascript
+Buffer.alloc(10, 'A'); //<Buffer 41 41 41 41 41 41 41 41 41 41>
+Buffer.alloc(10, 'ABC'); //<Buffer 41 42 43 41 42 43 41 42 43 41>
+```
+{% endcode %}
+
+Якщо значення, що передається за замовчуванням, менше розміру самого буфера, то воно буде повторюватися в ньому, поки повністю його не заповнить.
+
+Для створення буфера відразу потрібного розміру в Node.js є метод `Buffer.from()`, який приймає рядок і створює буфер.
+
+{% code lineNumbers="true" %}
+```javascript
+Buffer.from('ABCDE'); //<Buffer 41 42 43 44 45>
+```
+{% endcode %}
+
+Другим необов'язковим параметром методу `Buffer.from()` можна передати кодування.
+
+{% code lineNumbers="true" %}
+```javascript
+Buffer.from('ABCDE', 'base64'); //<Buffer 00 10 83>
+```
+{% endcode %}
+
+### Запис
+
+Щоб записати дані в порожній або вже заповнений буфер, використовуйте метод `[Buffer instance].write()`, який приймає такі параметри:
+
+* рядок для запису;
+* позицію, з якої потрібно розпочати запис;
+* довжину від початкового рядка, який потрібно записати;
+* кодування (за промовчанням `utf8` )
+
+Обов'язковим аргументом є лише рядок запису.
+
+{% code lineNumbers="true" %}
+```javascript
+//Запис в пустий буфер
+let buffer1 = Buffer.alloc(3); //<Buffer 00 00 00>
+buffer1.write('ABC'); //<Buffer 41 42 43>
+
+//Перезапис заповненого буфера
+let buffer2 = Buffer.from('ABC'); //<Buffer 41 42 43>
+buffer2.write('XYZ'); //<Buffer 58 59 5a>
+```
+{% endcode %}
+
+Приклад запису до буфера з додатковими параметрами.
+
+{% code lineNumbers="true" %}
+```javascript
+let buffer = Buffer.alloc(3);
+
+//зсув позиції
+buffer.write('A', 1); //<Buffer 00 41 00>
+
+//обмеження запису переданого рядка
+buffer.write('ABC', 0, 2); //<Buffer 41 42 00>
+```
+{% endcode %}
+
+Метод `[Buffer instance].write()` повертає довжину записаного в буфер рядка.
+
+{% code lineNumbers="true" %}
+```javascript
+let buffer = Buffer.alloc(5);
+console.log(buffer.write('ABC')); //3
+```
+{% endcode %}
