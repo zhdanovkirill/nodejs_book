@@ -342,3 +342,70 @@ let buffer = Buffer.alloc(5);
 console.log(buffer.write('ABC')); //3
 ```
 {% endcode %}
+
+### Читання
+
+Для отримання даних із буфера в тому форматі, в якому вони в нього заносилися, в Node.js є метод `[Buffer instance].toString()`, який приймає такі необов'язкові параметри:
+
+* кодування (за замовчуванням `utf8` );
+* позицію, з якої потрібно розпочати читання;
+* позицію, де закінчити читання.
+
+{% code lineNumbers="true" %}
+```javascript
+let buffer = Buffer.from('ABC');
+buffer.toString(); //ABC
+buffer.toString('utf8', 1, 1); //B
+```
+{% endcode %}
+
+### Перетворення на JSON
+
+Об'єкт Node.js класу `Buffer` може бути перетворений на формат JSON за допомогою методу `[Buffer instance].toJSON()`
+
+{% code lineNumbers="true" %}
+```javascript
+let buffer = Buffer.from('ABC');
+buffer.toJSON().data; //[65, 66, 67]
+```
+{% endcode %}
+
+### Buffer API <a href="#buffer-api" id="buffer-api"></a>
+
+У Node.js клас `Buffer` надає ряд корисних методів, що полегшують роботу з буфером:
+
+`Buffer.Encoding()` - приймає кодування та повертає `true`, якщо його використання припустимо при роботі з буфером;
+
+{% code lineNumbers="true" %}
+```javascript
+Buffer.isEncoding('ascii'); //true
+```
+{% endcode %}
+
+`Buffer.isBuffer()` - приймає дані та повертає `true`, якщо вони є екземпляром класу `Buffer`;
+
+{% code lineNumbers="true" %}
+```javascript
+Buffer.isBuffer('ascii'); //false
+```
+{% endcode %}
+
+`Buffer.byteLength()` - повертає довжину переданого рядка в байтах (це не те саме, що кількість символів у рядку), другим необов'язковим параметром можна передати кодування;
+
+{% code lineNumbers="true" %}
+```javascript
+Buffer.byteLength('ascii'); // 5
+Buffer.byteLength('ascii', 'base64'); //
+```
+{% endcode %}
+
+`Buffer.concat()` - приймає масив об'єктів класу `Buffer` та поєднує їх в один, другим необов'язковим параметром можна передати довжину підсумкового буфера.
+
+{% code lineNumbers="true" %}
+```javascript
+let buffer1 = Buffer.from('ABC');
+let buffer2 = Buffer.from('CDE');
+Buffer.conact([buffer1, buffer2], 5); //
+Buffer.conact([buffer1, buffer2], 7); //
+```
+{% endcode %}
