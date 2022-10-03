@@ -19,3 +19,4 @@
 * [Home Work](home-work/README.md)
   * [Home Work 1](home-work/home-work-1.md)
   * [Home Work 2](home-work/home-work-2.md)
+  * [Home work 3](home-work/home-work-3.md)
