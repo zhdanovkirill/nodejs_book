@@ -5,7 +5,7 @@
   * [Intro](node-js/intro.md)
   * [Lesson 1 - Фундаментальний Node.js](node-js/lesson-1-fundamentalnii-node.js.md)
   * [Lesson 2 - Потоки данных](node-js/potoki-dannykh.md)
-  * [Юніт- та функціональне тестування](node-js/yunit-i-funkcionalnoe-testirovanie.md)
+  * [Lesson 3 - Юніт- та функціональне тестування](node-js/lesson-3-yunit-ta-funkcionalne-testuvannya.md)
   * [Серверні фреймворки](node-js/servernye-freimvorki/README.md)
     * [Koa.js](node-js/servernye-freimvorki/koa.js.md)
     * [Meteor.js](node-js/servernye-freimvorki/meteor.js.md)
