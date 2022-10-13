@@ -256,14 +256,54 @@ module.exports = Todos;
 
 Додамо до нашого додатку два елементи TODO і відзначимо один із них як завершений. Запустіть [Node.js REPL](https://www.digitalocean.com/community/tutorials/how-to-use-the-node-js-repl) у тій же папці, що й файл `index.js`
 
-Ви побачите командний рядок > REPL, який вказує, що ми можемо ввести код JavaScript.
+Ви побачите командний рядок `>` REPL, який вказує, що ми можемо ввести код JavaScript.
 
-За допомогою require() ми завантажуємо модуль TODO змінну Todos. Пам'ятайте, що модуль повертає клас Todos за замовчуванням.
+За допомогою `require()` ми завантажуємо модуль TODO змінну `Todos`. Пам'ятайте, що модуль повертає клас `Todos` за замовчуванням. Тепер інстанцуємо об'єкт цього класу.
 
-```bash
-node
+Ми можемо використовувати об'єкт `todos` для перевірки роботи реалізації.
+
+Досі ми не бачили жодних висновків у нашому терміналі. Упевнімося, що ми зберегли елемент TODO `run code`, отримавши список всіх наших TODO:
+
+```javascript
 const Todos = require('./index');
 const todos = new Todos();
 todos.add("run code");
 todos.list();
+```
+
+Ви побачите наступний висновок у вашому REPL:
+
+```javascript
+Output
+[ { title: 'run code', completed: false } ]
+```
+
+Це очікуваний результат: ми маємо один елемент TODO у нашому масиві TODO, і він не завершений за умовчанням.
+
+Додамо інший елемент TODO:
+
+```bash
+todos.add("test everything");
+```
+
+Відзначимо перший елемент TODO як завершений:
+
+```bash
+todos.complete("run code");
+```
+
+Тепер наш об'єкт `todos` буде управляти двома елементами: `run code` і `test everything`. TODO `run code` також буде завершено. Підтвердимо це, викликавши `list()` ще раз:
+
+```bash
+todos.list();
+```
+
+Результат REPL буде виглядати так:
+
+```javascript
+Output
+[
+  { title: 'run code', completed: true },
+  { title: 'test everything', completed: false }
+]
 ```
