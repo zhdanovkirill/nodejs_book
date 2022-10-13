@@ -118,3 +118,51 @@ npm init -y
 ```bash
 npm i request --save-dev mocha
 ```
+
+Ми встановимо Mocha як залежність dev, оскільки він не використовується для production. Створимо файл, який міститиме код нашого модуля:
+
+```bash
+touch index.js
+```
+
+Тепер ми готові створити наш модуль. Відкрийте <mark style="color:blue;">`index.js`</mark>​​​  у текстовому редакторі, наприклад <mark style="color:blue;">`nano`</mark>
+
+```bash
+nano index.js
+```
+
+Почнемо з визначення класу <mark style="color:yellow;">`Todos`</mark> . Цей клас містить усі функції , необхідні для керування нашим списком TODO. Додайте наступні рядки коду до <mark style="color:blue;">`index.js`</mark>:
+
+{% code title="todos/index.js" lineNumbers="true" %}
+```javascript
+class Todos {
+    constructor() {
+        this.todos = [];
+    }
+}
+
+module.exports = Todos;
+```
+{% endcode %}
+
+Почнемо із створення класу `Todos`. Його функція `constructor()` не приймає аргументів, тому нам не потрібно надавати значення для створення об'єкта для цього класу. Все, що ми робимо, коли ініціалізуємо об'єкт `Todos`, - це створює властивість `todos`, яка є порожнім масивом.
+
+Лінія `модулів` дозволяє іншим модулям Node.js вимагати нашого класу `Todos`. Без прямого експорту класу тестовий файл, який ми створимо пізніше, зможе використовувати його.
+
+Додамо функцію повернення збереженого масиву `todos:`
+
+{% code title="" lineNumbers="true" %}
+```javascript
+class Todos {
+    constructor() {
+        this.todos = [];
+    }
+
+    list() {
+        return [...this.todos];
+    }
+}
+
+module.exports = Todos;
+```
+{% endcode %}
