@@ -525,3 +525,216 @@ describe("integration test", function() {
 ```bash
 npm test
 ```
+
+На цей раз вивід покаже помилку:
+
+{% code lineNumbers="true" %}
+```javascript
+Output
+...
+  integration test
+    1) should be able to add and complete TODOs
+
+
+  0 passing (16ms)
+  1 failing
+
+  1) integration test
+       should be able to add and complete TODOs:
+
+      AssertionError [ERR_ASSERTION]: Input A expected to strictly equal input B:
++ expected - actual
+
+- 2
++ 0
+      + expected - actual
+
+      -2
+      +0
+
+      at Context.<anonymous> (index.test.js:9:10)
+
+
+
+npm ERR! Test failed.  See above for more details.
+```
+{% endcode %}
+
+Цей текст стане в нагоді лише для налагодження причини непроходження тесту. Зверніть увагу, що оскільки тест не пройдено, на початку тестового сценарію не було галочки.
+
+Резюме тесту знаходиться вже не внизу виводу, а одразу після нашого списку відображених тестових сценаріїв:
+
+{% code lineNumbers="true" %}
+```javascript
+...
+0 passing (29ms)
+  1 failing
+...
+```
+{% endcode %}
+
+В решті висновку надано дані про непройдені тести. Спочатку ми бачимо, які тестові сценарії не пройдено:
+
+{% code lineNumbers="true" %}
+```javascript
+...
+1) integrated test
+       should be able to add and complete TODOs:
+...
+```
+{% endcode %}
+
+Потім ми побачимо причину непроходження тесту:
+
+{% code lineNumbers="true" %}
+```javascript
+...
+      AssertionError [ERR_ASSERTION]: Input A expected to strictly equal input B:
++ expected - actual
+
+- 2
++ 0
+      + expected - actual
+
+      -2
+      +0
+
+      at Context.<anonymous> (index.test.js:9:10)
+...
+```
+{% endcode %}
+
+Видається `AssertionError`, коли не виконується `strictEqual()`. Ми бачимо, що очікуване значення 0 відрізняється від `фактичного` значення 2.
+
+Потім ми побачимо рядок у файлі тестування, де код не виконується. І тут це рядок 10.
+
+Тепер ми переконалися, що наш тест не буде пройдений, якщо ми чекатимемо некоректні результати. Давайте змінимо тестовий сценарій назад на правильне значення:
+
+```bash
+nano index.test.js
+```
+
+Потім виберіть рядки `todos.add`, щоб ваш код виглядав так:
+
+{% code title="todos/index.test.js" lineNumbers="true" %}
+```javascript
+...
+describe("integration test", function () {
+    it("should be able to add and complete TODOs", function () {
+        let todos = new Todos();
+        assert.strictEqual(todos.list().length, 0);
+    });
+});
+```
+{% endcode %}
+
+Збережіть та закрийте файл.
+
+Запустіть його ще раз, щоб переконатися у проходженні без жодних хибних позитивних результатів:
+
+```bash
+npm test
+```
+
+Вивід виглядатиме так:
+
+{% code lineNumbers="true" %}
+```javascript
+Output
+...
+integration test
+    ✓ should be able to add and complete TODOs
+
+
+  1 passing (15ms)
+```
+{% endcode %}
+
+Тепер ми значно покращили відмовостійкість нашого тесту. Давайте перейдемо до нашого інтеграційного тесту. Наступний крок - додати новий елемент TODO до `index.test.js`:
+
+{% code title="todos/index.test.js" lineNumbers="true" %}
+```javascript
+...
+describe("integration test", function() {
+    it("should be able to add and complete TODOs", function() {
+        let todos = new Todos();
+        assert.strictEqual(todos.list().length, 0);
+
+        todos.add("run code");
+        assert.strictEqual(todos.list().length, 1);
+        assert.deepStrictEqual(todos.list(), [{title: "run code", completed: false}]);
+    });
+});
+```
+{% endcode %}
+
+Після використання функції `add()` ми підтверджуємо, що ми маємо один елемент TODO, керований нашим об'єктом `todos`, при цьому ми будемо використовувати `strictEqual()`. Наш наступний тест підтверджує дані в `todos` за допомогою `deepStrictEqual()`. Функція `deepStrictEqual()` рекурсивно перевіряє, чи мають наші передбачувані та реальні об'єкти одні й самі властивості. У цьому випадку перевіряється, чи містять обидва очікувані масиву об'єкт JavaScript. Потім перевіряється, чи мають ці об'єкти JavaScript однакові властивості, тобто обидві властивості `title` — це `run code`, а обидві властивості `completed` — `false`.
+
+Потім виконаємо тести, що залишилися, використовуючи ці два тести рівності, додавши наступні виділені рядки:
+
+{% code title="todos/index.test.js" lineNumbers="true" %}
+```javascript
+...
+describe("integration test", function() {
+    it("should be able to add and complete TODOs", function() {
+        let todos = new Todos();
+        assert.strictEqual(todos.list().length, 0);
+
+        todos.add("run code");
+        assert.strictEqual(todos.list().length, 1);
+        assert.deepStrictEqual(todos.list(), [{title: "run code", completed: false}]);
+
+        todos.add("test everything");
+        assert.strictEqual(todos.list().length, 2);
+        assert.deepStrictEqual(todos.list(),
+            [
+                { title: "run code", completed: false },
+                { title: "test everything", completed: false }
+            ]
+        );
+
+        todos.complete("run code");
+        assert.deepStrictEqual(todos.list(),
+            [
+                { title: "run code", completed: true },
+                { title: "test everything", completed: false }
+            ]
+    );
+  });
+});
+```
+{% endcode %}
+
+Збережіть та закрийте файл.
+
+Тепер додамо новий тест для цієї нової функції. Нам потрібно переконатися, що якщо ми викликаємо команду complete об'єкту `Todos`, в якому немає елементів, буде повернена помилка.
+
+Поверніться до `index.test.js` :
+
+```bash
+nano index.test.js
+```
+
+В кінці файлу додайте наступний код:
+
+{% code title="todos/index.test.js" lineNumbers="true" %}
+```javascript
+...
+describe("complete()", function() {
+    it("should fail if there are no TODOs", function() {
+        let todos = new Todos();
+        const expectedError = new Error("You have no TODOs stored. Why don't you add one first?");
+
+        assert.throws(() => {
+            todos.complete("doesn't exist");
+        }, expectedError);
+    });
+});
+```
+{% endcode %}
+
+Знову використовуємо `describe()` та `it()`. Цей тест починається із створення нового об'єкта `todos`. Потім ми визначаємо помилку, яку очікуємо отримати під час виклику функції `complete()`.
+
+Далі використовуємо функцію `throws()` модуля `assert`. Ця функція була створена для перевірки помилок, які видаються у коді. Перший аргумент - це функція, що містить код, який видає помилку. Другий аргумент – це помилка, яку ми очікуємо отримати.
+
+Знову запустіть тест за допомогою `npm test` у своєму терміналі і ви побачите наступний висновок:
