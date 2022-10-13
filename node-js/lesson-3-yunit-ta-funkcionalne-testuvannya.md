@@ -757,3 +757,195 @@ integrated test
 Цей вивід підтверджує переваги автоматизованого тестування за допомогою Mocha та `assert`. Оскільки наші тести виконуються скриптами, щоразу, коли ми запускаємо `npm test`, ми перевіряємо, що всі тести успішно пройдені. Нам не потрібно вручну перевіряти, чи працює інший код. Ми знаємо, що працює, оскільки наш тест успішно пройдено.
 
 Таким чином за допомогою цих тестів ми перевірили результати синхронного коду. Подивимося, як можна адаптувати ці методи тестування до роботи з асинхронним кодом.
+
+### Тести з використанням Sinon
+
+У проектах, у яких частини програм складно тестувати такі як Ajax-запити, таймери, дати, доступ до інших функцій браузера, бази даних, доступ до мережі або файлу. На допомогу прийде бібліотека тестування Sinon.
+
+Все це важко перевірити, тому що ви не можете контролювати їх у коді. Якщо ви використовуєте Ajax, вам потрібний сервер для відповіді на запит, щоб тести пройшли успішно. Якщо ви використовуєте `setTimeout`, ваш тест повинен буде чекати. З базами даних або мережами це те саме – вам потрібна база даних з правильними даними або мережевий сервер.
+
+### Що таке Sinon?
+
+Простіше кажучи, Sinon дозволяє вам замінити складні частини ваших тестів на щось, що робить тестування простим.
+
+При тестуванні фрагмента коду ви не хочете, щоб на нього вплинуло щось поза тестом. Якщо щось зовнішнє впливає на тест, тест стає складнішим.
+
+Якщо ви хочете перевірити код, що робить Ajax-дзвінок, як ви можете це зробити? Вам потрібно запустити сервер і переконатися, що він дає точну відповідь, необхідну для вашого тесту. Він складний у налаштуванні та ускладнює написання та запуск модульних тестів.
+
+### Як працює Sinon?
+
+Sinon допомагає усунути складність у тестах, дозволяючи легко створювати так звані тест-двійники.
+
+Тест-двійники, як випливає з назви, замінюють фрагменти коду, що використовуються у тестах.  Як ми бачимо зприкладу Ajax, замість налаштування сервера ми замінили б виклик Ajax на `test-double`.
+
+### Все, що потрібно знати про Sinon.JS
+
+Наступні сторінки містять всю документацію **API Sinon.JS**, а також коротке введення в концепції, які реалізує Sinon.
+
+* [**General setup**](https://sinonjs.org/releases/v14/general-setup)
+* [**Fakes**](https://sinonjs.org/releases/v14/fakes)
+* [**Spies**](https://sinonjs.org/releases/v14/spies)
+* [**Stubs**](https://sinonjs.org/releases/v14/stubs)
+* [**Mocks**](https://sinonjs.org/releases/v14/mocks)
+* [**Spy calls**](https://sinonjs.org/releases/v14/spy-call)
+* [**Promises**](https://sinonjs.org/releases/v14/promises)
+* [**Fake timers**](https://sinonjs.org/releases/v14/fake-timers)
+* [**Fake XHR and server**](https://sinonjs.org/releases/v14/fake-xhr-and-server)
+* [**JSON-P**](https://sinonjs.org/releases/v14/json-p)
+* [**Assertions**](https://sinonjs.org/releases/v14/assertions)
+* [**Matchers**](https://sinonjs.org/releases/v14/matchers)
+* [**Sandboxes**](https://sinonjs.org/releases/v14/sandbox)
+* [**Utils**](https://sinonjs.org/releases/v14/utils)
+
+### **Get Started**
+
+Установка за допомогою `npm`
+
+```bash
+npm install sinon
+```
+
+Системи побудови вузлів
+
+{% code lineNumbers="true" %}
+```javascript
+import * as sinon from 'sinon'
+```
+{% endcode %}
+
+Наступна функція приймає функцію як аргумент і повертає нову функцію. Ви можете викликати отриману функцію скільки завгодно разів, але оригінальна функція буде викликана лише один раз:
+
+{% code lineNumbers="true" %}
+```javascript
+export function once(fn) {
+   let returnValue,
+       called = false;
+   return function () {
+       if (!called) {
+           called = true;
+           returnValue = fn.apply(this, arguments);
+       }
+       return returnValue;
+   };
+}
+```
+{% endcode %}
+
+### Підробки **(Фейки)**
+
+Перевірити цю функцію можна досить елегантно за допомогою [**test fake**](https://sinonjs.org/releases/v14/fakes)**:**
+
+{% code lineNumbers="true" %}
+```javascript
+it("calls the original function only once", () => {
+   let callback = sinon.fake();
+   let proxy = once(callback);
+   proxy();
+   proxy();
+
+   assert.equal(callback.callCount, 1);
+});
+```
+{% endcode %}
+
+Ми також дбаємо про це значення та аргументи:
+
+```javascript
+it("calls original function with right this and args", function () {
+  var callback = sinon.fake();
+  var proxy = once(callback);
+  var obj = {};
+
+  proxy.call(obj, 1, 2, 3);
+
+  assert(callback.calledOn(obj));
+  assert(callback.calle
+```
+
+### Поведінка
+
+Функція, яку повертає `once`, повинна повертати те, що повертає оригінальна функція. Щоб перевірити це, ми створюємо фейк з поведінкою:
+
+```javascript
+it("returns the return value from the original function", function () {
+  var callback = sinon.fake.returns(42);
+  var proxy = once(callback);
+
+  assert.equals(proxy(), 42);
+});
+```
+
+Зручно, ми можемо запитувати фейки щодо їхньої `callCount`, отриманих аргументів тощо.
+
+### **"Фейковий" сервер**
+
+Попередній приклад показує, наскільки гнучким є цей API. Якщо це виглядає надто трудомістким, можливо, вам до вподоби буде **** фейковий сервер:
+
+{% code lineNumbers="true" %}
+```javascript
+var server;
+
+before(function () {
+  server = sinon.fakeServer.create();
+});
+after(function () {
+  server.restore();
+});
+
+it("calls callback with deserialized data", function () {
+  var callback = sinon.fake();
+  getTodos(42, callback);
+
+  // This is part of the FakeXMLHttpRequest API
+  server.requests[0].respond(
+    200,
+    { "Content-Type": "application/json" },
+    JSON.stringify([{ id: 1, text: "Provide examples", done: true }])
+  );
+
+  assert(callback.calledOnce);
+});
+```
+{% endcode %}
+
+Інтеграція тестового фреймворку, як правило, може ще більше зменшити шаблонність.
+
+### **Sinon для Todos**
+
+Перевіримо кількість викликів для методів `add/list` і дані які утворюються в результаті**:**
+
+{% code lineNumbers="true" %}
+```javascript
+describe('sinon test ', () => {
+
+   it("calls the original function", function () {
+       let spyAdd = sinon.spy(todos, "add");
+       let spyList = sinon.spy(todos, "list");
+       todos.add('apple pie')
+       assert.equal(spyAdd.calledOnce, true);
+       assert.equal(todos.list()[0].id, 4);
+       assert.equal(todos.list()[0].status, 'active');
+       assert.equal(todos.list()[0].title, 'apple pie');
+       assert.equal(spyList.callCount, 3);
+
+   });
+
+   it("todos test add/list function", () => {
+
+       const fake = sinon.fake.returns({id: 5, title: 'apple pie', status: 'active'});
+       todos.add('apple pie')
+
+       assert.equal(todos.list()[0].id, fake().id);
+       assert.equal(todos.list()[0].status, fake().status);
+       assert.equal(todos.list()[0].title, fake().title);
+   });
+
+})
+```
+{% endcode %}
+
+Результат роботи програми**:**
+
+<figure><img src="https://lh5.googleusercontent.com/k009Li4g746wO3lsuzY6uawwT5ceT2QZWYTqcxYbuUz2T-dXvi7H1EAOZ2vQ1IC7f71EK82R9ZTTT_8XYB2UELpE1KFnoCViBpzOJKqoqGdArgRsqMyrqldYEfZtuCkzVHnoBNqFm6WWTbIELGmnYeUmqMjbhgHzD7EzKWc9DmY2Ib2NM5IDF2RFtA" alt=""><figcaption></figcaption></figure>
+
+Sinon у тестуванні дає нам спосіб відстеження дзвінків, зроблених у методі, щоб ми могли перевірити, що він працює, як очікувалося. Ми використовуємо Sinon , щоб перевірити, чи назвав метод або не викликаний, скільки разів його викликали, з якими аргументами і значення, яке він повертається при виклику.
