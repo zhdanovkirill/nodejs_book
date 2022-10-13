@@ -416,3 +416,112 @@ nano package.json
 ```
 
 Тепер у властивості `scripts` змініть його наступним чином:
+
+{% code title="todos/package.json" lineNumbers="true" %}
+```javascript
+...
+"scripts": {
+    "test": "mocha index.test.js"
+},
+...
+
+```
+{% endcode %}
+
+Змінивши поведінку команди `test` командного рядка `npm`. Коли ми запустимо `npm test`, npm перевірить команду, яку ми тільки-но ввели в `package.json`. Він буде шукати бібліотеку Mocha в нашій папці `node_modules` і запустить команду `mocha` з нашим файлом тестування.
+
+Збережіть та закрийте `package.json`.
+
+З'ясуємо, що відбувається, коли ми запускаємо наш тест. У своєму терміналі введіть:
+
+```bash
+npm test
+```
+
+Команда видасть наступний вивід:
+
+{% code lineNumbers="true" %}
+```javascript
+Output
+> todos@1.0.0 test your_file_path/todos
+> mocha index.test.js
+
+
+
+integrated test
+    ✓ should be able to add and complete TODOs
+
+
+  1 passing (16ms)
+```
+{% endcode %}
+
+Цей вивід спершу покаже нам, яка група тестів зараз запуститься. Для кожного окремого тесту групи тестовий сценарій є ступінчастим. Ми бачимо наше ім'я тесту так, як ми описали його функції `it()`. Галочка з лівого боку тестового сценарію вказує на те, що тест пройдено.
+
+Внизу ми отримаємо резюме всіх наших тестів. У нашому випадку один тест було виконано та завершено протягом 16 мс (час залежить від комп'ютера).
+
+Тестування розпочалося успішно. Проте поточний тестовий сценарій може допускати хибні позитивні результати. _Помилкові позитивні результати_ - це тестовий сценарій, коли тест пройдено тоді, коли цього не повинно було статись.
+
+Тепер ми перевіряємо, що довжина масиву не дорівнює `1`. Давайте змінимо тест, щоб ця умова була істинною, коли не повинно. Додайте наступні рядки до `index.test.js`:
+
+{% code title="todos/index.test.js" lineNumbers="true" %}
+```javascript
+...
+describe("integration test", function() {
+    it("should be able to add and complete TODOs", function() {
+        let todos = new Todos();
+        todos.add("get up from bed");
+        todos.add("make up bed");
+        assert.notStrictEqual(todos.list().length, 1);
+    });
+});
+```
+{% endcode %}
+
+Збережіть та закрийте файл.
+
+Ми додали два елементи TODO. Давайте запустимо тест, щоб побачити, що станеться:
+
+```bash
+npm test
+```
+
+В результаті ви отримаєте наступний висновок:
+
+{% code lineNumbers="true" %}
+```javascript
+Output
+...
+integrated test
+    ✓ should be able to add and complete TODOs
+
+
+  1 passing (8ms)
+```
+{% endcode %}
+
+Він проходить згідно з очікуваннями, оскільки довжина більше 1. Однак він не досягає початкової мети проведення цього першого тесту. Перший тест мав би підтвердити, що ми починаємо з чистого стану. Більш досконалий тест підтвердить це у всіх випадках.
+
+Давайте змінимо тест таким чином, що його успішне проходження буде можливим лише за повної відсутності TODO у пам'яті. Виконаэм такі зміни в `index.test.js`:
+
+{% code title="todos/index.test.js" lineNumbers="true" %}
+```javascript
+...
+describe("integration test", function() {
+    it("should be able to add and complete TODOs", function() {
+        let todos = new Todos();
+        todos.add("get up from bed");
+        todos.add("make up bed");
+        assert.strictEqual(todos.list().length, 0);
+    });
+});
+```
+{% endcode %}
+
+Замінивши `notStrictEqual()`​ на `strictEqual()`​, функцію, яка перевіряє еквівалентність між фактичним та очікуваним аргументом.
+
+Збережіть та закрийте файл, потім запустіть тест, щоб побачити, що станеться:
+
+```bash
+npm test
+```
