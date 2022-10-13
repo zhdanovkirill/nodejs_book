@@ -151,7 +151,7 @@ module.exports = Todos;
 
 Додамо функцію повернення збереженого масиву `todos:`
 
-{% code title="" lineNumbers="true" %}
+{% code title="todos/index.js" lineNumbers="true" %}
 ```javascript
 class Todos {
     constructor() {
@@ -160,6 +160,39 @@ class Todos {
 
     list() {
         return [...this.todos];
+    }
+}
+
+module.exports = Todos;
+```
+{% endcode %}
+
+Функція `list()` повертає копію масиву класу. Вона робить копію масиву, використовуючи JavaScript, що деструктурує синтаксис. Ми створюємо копію масиву, щоб зміни, які користувач вносить до масиву, поверненого функцією `list()`, не впливали на масив, який використовується об'єктом `Todos`.
+
+{% hint style="info" %}
+Масиви JavaScript – це _довідкові файли_. Це означає, що для будь-якого надання змінної для масиву або виклику функції з масивом як параметр JavaScript звертається до оригінального створеного масиву. Наприклад, якщо у нас є масив з трьома елементами з ім'ям <mark style="color:orange;">`x`</mark> і ми створюємо нову змінну <mark style="color:orange;">`y`</mark>, то <mark style="color:orange;">`y =`</mark>` ``x`, <mark style="color:orange;">`y`</mark> і <mark style="color:orange;">`x`</mark> відносяться до одного і того ж. Всі зміни, що виконуються для масиву з y впливають на змінну <mark style="color:orange;">`x`</mark> і навпаки.
+{% endhint %}
+
+Тепер створимо функцію `add()`, яка додає новий елемент TODO:
+
+{% code title="todos/index.js" lineNumbers="true" %}
+```javascript
+class Todos {
+    constructor() {
+        this.todos = [];
+    }
+
+    list() {
+        return [...this.todos];
+    }
+
+    add(title) {
+        let todo = {
+            title: title,
+            completed: false,
+        }
+
+        this.todos.push(todo);
     }
 }
 
