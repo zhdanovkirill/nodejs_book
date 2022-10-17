@@ -107,7 +107,129 @@ ID контака.
 Надсилаємо дані на сервер у форматі json. Сервер надсилає відповіддю створений контакт у форматі json. Parameters Header
 {% endswagger-description %}
 
-{% swagger-parameter in="header" %}
-
+{% swagger-parameter in="header" name="Content-Type" type="string" required="true" %}
+Content-Type: application/json Body
 {% endswagger-parameter %}
+
+{% swagger-parameter in="body" name="name" type="string" required="true" %}
+Ім'я контакту
+{% endswagger-parameter %}
+
+{% swagger-parameter in="body" name="phone" type="string" required="true" %}
+Телефон контакту
+{% endswagger-parameter %}
+
+{% swagger-parameter in="body" name="email" type="string" required="true" %}
+Електронна пошта контакту
+{% endswagger-parameter %}
+
+{% swagger-response status="200: OK" description="Якщо контакт створено успішно " %}
+```javascript
+{
+    "id" : 1 , 
+    "name" : "Vasya" , 
+    "email" : "vasya@gmail.com" , 
+    "phone" : "+380779879992" 
+}
+```
+{% endswagger-response %}
+
+{% swagger-response status="400: Bad Request" description="Якщо відсутня хоча б одне поле" %}
+```javascript
+{
+    "message" : "missing required name field" 
+}
+```
+{% endswagger-response %}
+{% endswagger %}
+
+## 4 - Видалити контакт
+
+Додати endpoint для видалення контакту з id. Повідомлення з інформацією про статус видалення контакту має надходити у форматі json.
+
+* Не отримує `body`
+* Отримує параметр `contactId`
+* Викликає функцію `removeContact` для роботи з json-файлом`contacts.json`
+* Якщо такий `id` є - даляє та повертає json формату `{"message": "Сontact deleted"}` та статусом 200
+* Якщо такого `id` немає, повертає json з ключем `{"message": "Contact not found"}` та статусом 404
+
+{% swagger method="delete" path="" baseUrl="http://localhost:3000/api/contacts/:contactId" summary="Видалити контакт за ID" %}
+{% swagger-description %}
+Сервер надсилає лише відповідь у форматі json. Parameters Path
+{% endswagger-description %}
+
+{% swagger-parameter in="path" name="contactId" type="number" %}
+id контакту
+{% endswagger-parameter %}
+
+{% swagger-response status="200: OK" description="Все успішно" %}
+```javascript
+{
+    "message": "Contact deleted"
+}
+```
+{% endswagger-response %}
+
+{% swagger-response status="404: Not Found" description="Якщо контакт не знайдено" %}
+```javascript
+{
+    "message": "Contact not found"
+}
+```
+{% endswagger-response %}
+{% endswagger %}
+
+## 5 - Оновити дані контакту
+
+Додати endpoint для оновлення даних контакту id. Оновлений контакт повинен надходити у форматі json.
+
+* Отримує параметр `contactId`
+* Отримує `body` у json-форматі з оновленням будь-яких полів `name`, `email` и `phone` . Ви вказуєте лише поля, які хочете оновити.
+* Якщо `body` ні, повертає json з ключем `{"message": "Missing fields"}` та статусом 400
+* Якщо body все добре, викликає функцію `updateContact(contactId, body)`(напишіть її) для оновлення контакту у файлі `contacts.json`
+* За результатом роботи функції повертає оновлений об'єкт контакту та статусом 200. В іншому випадку, повертає json з ключем `{"message": "Contact not found"}` та статусом 404
+
+{% swagger method="get" path="" baseUrl="http://localhost:3000/api/contacts/:contactId" summary="Оновити контакт" %}
+{% swagger-description %}
+Дані надсилаємо у форматі json. Сервенр надсилає дані також у форматі json. Поля з новими даними про контакт опціональними. Тобто, ви можете вказати тільки ті поля, які хочете оновити.
+{% endswagger-description %}
+
+{% swagger-parameter in="path" name="contactId" type="number" required="true" %}
+id контакту Header
+{% endswagger-parameter %}
+
+{% swagger-parameter in="header" name="Content-Type" type="string" required="true" %}
+Content-Type: application/json
+{% endswagger-parameter %}
+
+{% swagger-parameter in="body" name="name" type="string" %}
+Ім'я контакту
+{% endswagger-parameter %}
+
+{% swagger-parameter in="body" name="phone" type="string" %}
+Телефон контакту
+{% endswagger-parameter %}
+
+{% swagger-parameter in="body" name="email" type="string" %}
+Електронна пошта контакту
+{% endswagger-parameter %}
+
+{% swagger-response status="200: OK" description="Контакт оновлено успішно" %}
+```javascript
+{
+    "id" : 1 , 
+    "name" : "Kolya" , 
+    "email" : "kolya@gmail.com" , 
+    "phone" : "+380779879992" 
+}
+```
+{% endswagger-response %}
+
+{% swagger-response status="404: Not Found" description="Контакт не знайдено" %}
+```javascript
+{
+    "message" : "Contact not found" 
+}
+```
+{% endswagger-response %}
 {% endswagger %}
