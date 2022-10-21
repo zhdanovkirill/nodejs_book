@@ -120,4 +120,19 @@ title: 'Titanic',
 
 * Натисніть кнопку **Finish і Close**.
 
-\
+5\) Це відкриє наступний екран. Натисніть кнопку **Go to Databases**.
+
+<figure><img src="../../.gitbook/assets/image (7).png" alt=""><figcaption></figcaption></figure>
+
+6\) Ви повернетеся до екрана «_Database Deployments »._ Натисніть кнопку **Add My Own Data** .\
+
+
+<figure><img src="../../.gitbook/assets/Screenshot_2022-10-21_13-49-11.png" alt=""><figcaption></figcaption></figure>
+
+7\) Відкриється розділ _Collections_. Натисніть кнопку «**Add My Own Data**».
+
+<figure><img src="../../.gitbook/assets/Screenshot_2022-10-21_13-50-55 (1).png" alt=""><figcaption></figcaption></figure>
+
+8\) Це відкриє екран _Create Database._
+
+<figure><img src="../../.gitbook/assets/Screenshot_2022-10-21_13-52-14.png" alt=""><figcaption></figcaption></figure>
