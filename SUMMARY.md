@@ -8,7 +8,6 @@
   * [Lesson 3 - Юніт- та функціональне тестування](node-js/lesson-3-yunit-ta-funkcionalne-testuvannya.md)
   * [Lesson 4 - Серверні фреймворки](node-js/lesson-4-serverni-freimvorki.md)
   * [Бази даних](node-js/bazy-dannykh.md)
-    * [Загальні принципи роботи з базами даних](node-js/bazi-danikh/zagalni-principi-roboti-z-bazami-danikh.md)
     * [Mongo](node-js/bazi-danikh/mongo.md)
     * [Postgres](node-js/bazi-danikh/postgres.md)
   * [Пользователи, авторизация](node-js/polzovateli-avtorizaciya.md)
