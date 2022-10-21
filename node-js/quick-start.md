@@ -20,7 +20,7 @@
 За допомогою цього інструменту можна швидко встановлювати/змінювати/ видаляти будь які версії node.
 {% endhint %}
 
-<figure><img src="../.gitbook/assets/image (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 Щоб переконатися, що втановлення Node js пройшло успішно, виконайте в команду.
 

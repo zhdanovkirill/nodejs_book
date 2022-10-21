@@ -94,7 +94,7 @@ title: 'Titanic',
 
 3\) __ Відкриється екран _Create a Shared Cluster ._
 
-<figure><img src="../../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 * Виберіть будь-якого постачальника в розділі _Cloud Provider & Region_ . Різні регіони пропонують різних провайдерів.
 * _Cluster Tier_ та _Additional Settings_ змінювати не потрібно. Ви можете змінити назву свого Cluster в розділі _Cluster Name_.  Ми називаємо це `Cluster0`для цього підручника.
@@ -122,16 +122,16 @@ title: 'Titanic',
 
 5\) Це відкриє наступний екран. Натисніть кнопку **Go to Databases**.
 
-<figure><img src="../../.gitbook/assets/image (7).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
 
 6\) Ви повернетеся до екрана «_Database Deployments »._ Натисніть кнопку **Add My Own Data** .\
 
 
-<figure><img src="../../.gitbook/assets/Screenshot_2022-10-21_13-49-11.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/Screenshot_2022-10-21_13-49-11 (1).png" alt=""><figcaption></figcaption></figure>
 
 7\) Відкриється розділ _Collections_. Натисніть кнопку «**Add My Own Data**».
 
-<figure><img src="../../.gitbook/assets/Screenshot_2022-10-21_13-50-55.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/Screenshot_2022-10-21_13-50-55 (1).png" alt=""><figcaption></figcaption></figure>
 
 8\) Це відкриє екран _Create Database._
 
@@ -150,3 +150,19 @@ title: 'Titanic',
 10\) На екрані огляду _Cluster0_ натисніть кнопку **Connect**.
 
 <figure><img src="../../.gitbook/assets/Screenshot_2022-10-21_13-56-37.png" alt=""><figcaption></figcaption></figure>
+
+11\) Відкриється екран _Connect to Cluster._ Натисніть опцію «**Connect your application**».
+
+<figure><img src="../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+
+12\) Тепер вам буде показано екран _Connect to Cluster0._
+
+<figure><img src="../../.gitbook/assets/Screenshot_2022-10-21_13-57-52.png" alt=""><figcaption></figcaption></figure>
+
+* Натисніть піктограму **Copy**, щоб скопіювати рядок підключення.
+* Вставте це у свій локальний текстовий редактор.
+* Оновіть пароль своїм паролем користувача.
+* Замінити `myFirstDatabase`на `local_library`.
+* Збережіть файл, що містить цей рядок, у безпечному місці.
+
+Тепер ви створили базу даних і маєте URL-адресу (з іменем користувача та паролем), яку можна використовувати для доступу до неї. Це буде виглядати приблизно так:`mongodb+srv://your_user_name:your_password@cluster0.upbx7.mongodb.net/local_library?retryWrites=true&w=majority`
