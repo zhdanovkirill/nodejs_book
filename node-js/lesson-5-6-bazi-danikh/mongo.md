@@ -506,6 +506,93 @@ Athlete.find()
 * [`findOne()`](https://mongoosejs.com/docs/api.html#query\_Query-findOne): знаходить один документ, який відповідає вказаним критеріям.
 * [`findByIdAndRemove()`](https://mongoosejs.com/docs/api.html#model\_Model.findByIdAndRemove), [`findByIdAndUpdate()`](https://mongoosejs.com/docs/api.html#model\_Model.findByIdAndUpdate), [`findOneAndRemove()`](https://mongoosejs.com/docs/api.html#query\_Query-findOneAndRemove), [`findOneAndUpdate()`](https://mongoosejs.com/docs/api.html#query\_Query-findOneAndUpdate): знаходить окремий документ за `id`критерієм або оновлює або видаляє його. Це корисні зручні функції для оновлення та видалення записів.
 
+{% hint style="info" %}
+Існує також [`count()`](https://mongoosejs.com/docs/api.html#model\_Model.count)метод, за допомогою якого можна отримати кількість елементів, які відповідають умовам. Це корисно, якщо ви хочете виконати підрахунок без фактичного отримання записів.
+{% endhint %}
+
+За допомогою запитів можна зробити багато іншого. Для отримання додаткової інформації див.: [Queries](https://mongoosejs.com/docs/queries.html) (документи Mongoose).
+
+### **Робота з супутніми документами — населення**
+
+Ви можете створювати посилання з одного документа/примірника моделі на інший за допомогою `ObjectId`поля схеми або з одного документа на багато за допомогою масиву `ObjectIds`. Поле зберігає ідентифікатор пов’язаної моделі. Якщо вам потрібен фактичний вміст пов’язаного документа, ви можете використовувати [`populate()`](https://mongoosejs.com/docs/api.html#query\_Query-populate)метод у запиті, щоб замінити ідентифікатор фактичними даними.
+
+Наприклад, наведена нижче схема визначає авторів і історії. Кожен автор може мати кілька історій, які ми представляємо як масив `ObjectId`. У кожної історії може бути один автор. Властивість `ref`повідомляє схемі, яку модель можна призначити цьому полю.
+
+{% code lineNumbers="true" %}
+```javascript
+const mongoose = require("mongoose");
+
+const Schema = mongoose.Schema;
+
+const authorSchema = Schema({
+  name: String,
+  stories: [{ type: Schema.Types.ObjectId, ref: "Story" }],
+});
+
+const storySchema = Schema({
+  author: { type: Schema.Types.ObjectId, ref: "Author" },
+  title: String,
+});
+
+const Story = mongoose.model("Story", storySchema);
+const Author = mongoose.model("Author", authorSchema);
+```
+{% endcode %}
+
+Ми можемо зберегти наші посилання на відповідний документ, призначивши `_id`значення. Нижче ми створюємо автора, потім історію та призначаємо ідентифікатор автора в поле автора нашої історії.
+
+{% code lineNumbers="true" %}
+```javascript
+const bob = new Author({ name: "Bob Smith" });
+
+bob.save((err) => {
+  if (err) return handleError(err);
+
+  // Bob now exists, so lets create a story
+  const story = new Story({
+    title: "Bob goes sledding",
+    author: bob._id, // assign the _id from our author Bob. This ID is created by default!
+  });
+
+  story.save((err) => {
+    if (err) return handleError(err);
+    // Bob now has his story
+  });
+});
+```
+{% endcode %}
+
+Наш документ історії тепер має автора, на якого посилається ідентифікатор документа автора. Щоб отримати інформацію про автора в результатах історії, ми використовуємо `populate()`, як показано нижче.
+
+{% code lineNumbers="true" %}
+```javascript
+Story.findOne({ title: "Bob goes sledding" })
+  .populate("author") // This populates the author id with actual author information!
+  .exec((err, story) => {
+    if (err) return handleError(err);
+    console.log("The author is %s", story.author.name);
+    // prints "The author is Bob Smith"
+  });
+```
+{% endcode %}
+
+{% hint style="info" %}
+Уважні читачі помітять, що ми додали автора до нашої історії, але ми нічого не зробили, щоб додати нашу історію до нашого `stories`масиву авторів. Як тоді ми можемо отримати всі історії певного автора? Одним із способів було б додати нашу історію до масиву історій, але це призведе до того, що ми матимемо два місця, де потрібно зберігати інформацію про авторів та історії.
+
+Кращий спосіб — отримати `_id`автора , а потім використати його для пошуку в полі автора в усіх історіях _._`find()`
+
+{% code lineNumbers="true" %}
+```javascript
+Story.find({ author: bob._id }).exec((err, stories) => {
+  if (err) return handleError(err);
+  // returns all stories that have Bob's id as their author.
+});
+```
+{% endcode %}
+{% endhint %}
+
+Це майже все, що вам потрібно знати про роботу з пов'язаними елементами для цього _tutorial._ Для отримання більш детальної інформації див. [Population](https://mongoosejs.com/docs/populate.html) (документи Mongoose).
+
 \
 
 
