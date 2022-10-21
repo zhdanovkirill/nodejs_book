@@ -437,6 +437,75 @@ awesome_instance.save((err) => {
 
 Можна **** шукати записи за допомогою методів запиту, вказавши умови запиту як документ JSON. Наведений нижче фрагмент коду показує, як можна знайти в базі даних усіх спортсменів, які грають у теніс, повертаючи лише поля для _імені_ та _віку_ спортсмена . Тут ми лише вказуємо одне відповідне поле (вид спорту), але ви можете додати більше критеріїв, указати критерії регулярного виразу або взагалі видалити умови, щоб повернути всіх спортсменів.
 
+{% code lineNumbers="true" %}
+```javascript
+const Athlete = mongoose.model("Athlete", yourSchema);
+
+// find all athletes who play tennis, selecting the 'name' and 'age' fields
+Athlete.find({ sport: "Tennis" }, "name age", (err, athletes) => {
+  if (err) return handleError(err);
+  // 'athletes' contains the list of athletes that match the criteria.
+});
+```
+{% endcode %}
+
+Якщо ви вкажете зворотний виклик, як показано вище, запит буде виконано негайно. Зворотний виклик буде викликано після завершення пошуку.
+
+{% hint style="info" %}
+Усі зворотні виклики в Mongoose використовують шаблон `callback(error, result)`. Якщо під час виконання запиту виникає помилка, `error`параметр міститиме документ про помилку та `result`буде нульовим. Якщо запит виконано успішно, `error`параметр матиме нульове значення, а поле `result`буде заповнено результатами запиту.
+{% endhint %}
+
+{% hint style="info" %}
+Важливо пам’ятати, що відсутність результатів **не є помилкою** для пошуку, але це може бути випадком помилки в контексті вашої програми. Якщо ваша програма очікує пошуку значення, ви можете перевірити результат у зворотному виклику        (`results==null`) або послідовному ланцюжку методу [orFail()](https://mongoosejs.com/docs/api.html#query\_Query-orFail) у запиті.
+{% endhint %}
+
+Якщо ви не вкажете зворотний виклик, тоді API поверне змінну типу [Query](https://mongoosejs.com/docs/api.html#query-js) . Ви можете використовувати цей об’єкт запиту, щоб створити свій запит, а потім виконати його (за допомогою зворотного виклику) пізніше за допомогою `exec()`методу.
+
+{% code lineNumbers="true" %}
+```javascript
+// find all athletes that play tennis
+const query = Athlete.find({ sport: "Tennis" });
+
+// selecting the 'name' and 'age' fields
+query.select("name age");
+
+// limit our results to 5 items
+query.limit(5);
+
+// sort by age
+query.sort({ age: -1 });
+
+// execute the query at a later time
+query.exec((err, athletes) => {
+  if (err) return handleError(err);
+  // athletes contains an ordered list of 5 athletes who play Tennis
+});
+```
+{% endcode %}
+
+Вище ми визначили умови запиту в `find()`методі. Ми також можемо зробити це за допомогою `where()`функції, і ми можемо об’єднати всі частини нашого запиту разом за допомогою оператора крапки (.), а не додавати їх окремо. Наведений нижче фрагмент коду такий самий, як і наш запит вище, з додатковою умовою щодо віку.
+
+{% code lineNumbers="true" %}
+```javascript
+Athlete.find()
+  .where("sport")
+  .equals("Tennis")
+  .where("age")
+  .gt(17)
+  .lt(50) // Additional where query
+  .limit(5)
+  .sort({ age: -1 })
+  .select("name age")
+  .exec(callback); // where callback is the name of our callback function.
+```
+{% endcode %}
+
+Метод [find()](https://mongoosejs.com/docs/api.html#query\_Query-find) отримує всі відповідні записи, але часто потрібно отримати лише один збіг. Наступні методи запитують один запис:
+
+* [`findById()`](https://mongoosejs.com/docs/api.html#model\_Model.findById): знаходить документ із зазначеним `id`(кожен документ має унікальний `id`).
+* [`findOne()`](https://mongoosejs.com/docs/api.html#query\_Query-findOne): знаходить один документ, який відповідає вказаним критеріям.
+* [`findByIdAndRemove()`](https://mongoosejs.com/docs/api.html#model\_Model.findByIdAndRemove), [`findByIdAndUpdate()`](https://mongoosejs.com/docs/api.html#model\_Model.findByIdAndUpdate), [`findOneAndRemove()`](https://mongoosejs.com/docs/api.html#query\_Query-findOneAndRemove), [`findOneAndUpdate()`](https://mongoosejs.com/docs/api.html#query\_Query-findOneAndUpdate): знаходить окремий документ за `id`критерієм або оновлює або видаляє його. Це корисні зручні функції для оновлення та видалення записів.
+
 \
 
 
