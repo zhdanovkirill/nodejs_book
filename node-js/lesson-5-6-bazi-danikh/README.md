@@ -1,4 +1,4 @@
-# Бази даних
+# Lesson 5,6 - Бази даних
 
 ## Загальні поняття роботи з базами даних:
 
@@ -64,7 +64,7 @@
 
 Екземпляр – це таблиця з рядками або стовпцями.
 
-<figure><img src="../.gitbook/assets/image (1) (2).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1) (2).png" alt=""><figcaption></figcaption></figure>
 
 Схема визначає структуру, як ім’я відношення, тип кожного стовпця та ім’я.
 
@@ -78,7 +78,7 @@
 
 Хмарна база даних дозволяє вам зберігати, керувати та отримувати їх структуровані, неструктуровані дані через хмарну платформу. Ці дані доступні через Інтернет. Хмарні бази даних також називають базою даних як послуга (DBaaS), оскільки вони пропонуються як керована служба.
 
-<figure><img src="../.gitbook/assets/image (3) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (3) (1).png" alt=""><figcaption></figcaption></figure>
 
 **Кращі варіанти хмарних баз даних:**
 
@@ -110,7 +110,7 @@
 
 Деякі приклади системи баз даних NoSQL з їх категорією:
 
-<figure><img src="../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
 
 * MongoDB, CouchDB, Cloudant **(на основі документів)**
 * Memcached, Redis, Coherence **(сховище ключ-значення)**
@@ -172,7 +172,7 @@ _**Резервне копіювання**_
 
 Система управління базами даних (DBMS – Data Base Management System) – це програмне забезпечення, яке використовується для зберігання та отримання бази даних. Наприклад, Oracle, MySQL тощо; це деякі популярні засоби СУБД.
 
-<figure><img src="../.gitbook/assets/image (5).png" alt=""><figcaption><p><strong>СУБД (система управління базою даних)</strong></p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (5).png" alt=""><figcaption><p><strong>СУБД (система управління базою даних)</strong></p></figcaption></figure>
 
 * СУБД забезпечує інтерфейс для виконання різних операцій, таких як створення, видалення, модифікація тощо.
 * СУБД дозволяє користувачеві створювати свої бази даних відповідно до їх вимог.
