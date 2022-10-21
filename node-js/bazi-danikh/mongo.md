@@ -131,8 +131,22 @@ title: 'Titanic',
 
 7\) Відкриється розділ _Collections_. Натисніть кнопку «**Add My Own Data**».
 
-<figure><img src="../../.gitbook/assets/Screenshot_2022-10-21_13-50-55 (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/Screenshot_2022-10-21_13-50-55.png" alt=""><figcaption></figcaption></figure>
 
 8\) Це відкриє екран _Create Database._
 
 <figure><img src="../../.gitbook/assets/Screenshot_2022-10-21_13-52-14.png" alt=""><figcaption></figcaption></figure>
+
+* Введіть назву для нової бази даних як `local_library`.
+* Введіть назву колекції як `Collection0`.
+* Натисніть кнопку **Create**, щоб створити базу даних.
+
+9\) Ви повернетеся до екрана _Collections_ зі створеною базою даних_._
+
+<figure><img src="../../.gitbook/assets/Screenshot_2022-10-21_13-52-43.png" alt=""><figcaption></figcaption></figure>
+
+* Натисніть вкладку «_Overview_»,  щоб повернутися до огляду кластера.
+
+10\) На екрані огляду _Cluster0_ натисніть кнопку **Connect**.
+
+<figure><img src="../../.gitbook/assets/Screenshot_2022-10-21_13-56-37.png" alt=""><figcaption></figcaption></figure>
