@@ -593,8 +593,41 @@ Story.find({ author: bob._id }).exec((err, stories) => {
 
 Це майже все, що вам потрібно знати про роботу з пов'язаними елементами для цього _tutorial._ Для отримання більш детальної інформації див. [Population](https://mongoosejs.com/docs/populate.html) (документи Mongoose).
 
-\
+### Одна схема/модель на файл
 
+Хоча ви можете створювати схеми та моделі, використовуючи будь-яку файлову структуру, наполеглево рекомендую визначити кожну схему моделі в окремому модулі (файлі), а потім експортувати метод для створення моделі. Це показано нижче:
+
+{% code lineNumbers="true" %}
+```javascript
+// File: ./models/somemodel.js
+
+// Require Mongoose
+const mongoose = require("mongoose");
+
+// Define a schema
+const Schema = mongoose.Schema;
+
+const SomeModelSchema = new Schema({
+  a_string: String,
+  a_date: Date,
+});
+
+// Export function to create "SomeModel" model class
+module.exports = mongoose.model("SomeModel", SomeModelSchema);
+```
+{% endcode %}
+
+Потім ви можете вимагати та використовувати модель негайно в інших файлах. Нижче наведено приклад, як ви можете використовувати його, щоб отримати всі екземпляри моделі.
+
+{% code lineNumbers="true" %}
+```javascript
+// Create a SomeModel model just by requiring the module
+const SomeModel = require("../models/somemodel");
+
+// Use the SomeModel object (model) to find all SomeModel records
+SomeModel.find(callback_function);
+```
+{% endcode %}
 
 \
 
