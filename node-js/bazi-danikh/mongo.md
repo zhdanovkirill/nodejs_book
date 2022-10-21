@@ -165,4 +165,225 @@ title: 'Titanic',
 * Замінити `myFirstDatabase`на `local_library`.
 * Збережіть файл, що містить цей рядок, у безпечному місці.
 
-Тепер ви створили базу даних і маєте URL-адресу (з іменем користувача та паролем), яку можна використовувати для доступу до неї. Це буде виглядати приблизно так:`mongodb+srv://your_user_name:your_password@cluster0.upbx7.mongodb.net/local_library?retryWrites=true&w=majority`
+Тепер ви створили базу даних і маєте URL-адресу (з іменем користувача та паролем), яку можна використовувати для доступу до неї. Це буде виглядати приблизно так: `mongodb+srv://Kyrylo:@cluster0.aut047l.mongodb.net/?retryWrites=true&w=majority`
+
+## Перше підключення
+
+Для тестування бд використайте наступний код
+
+{% code lineNumbers="true" %}
+```javascript
+const { MongoClient } = require("mongodb");
+const username = encodeURIComponent("Name");
+const password = encodeURIComponent("Password");
+const cluster = "cluster0.aut047l.mongodb.net";
+
+let uri =
+    `mongodb+srv://${username}:${password}@${cluster}/?retryWrites=true&w=majority`;
+const client = new MongoClient(uri);
+async function testMongoConnection() {
+    try {
+        await client.connect();
+        const database = client.db("LessonNodeDB");
+        const ratings = database.collection("Collection0");
+        const cursor = ratings.find();
+        console.log(ratings)
+        await cursor.forEach(doc => console.log(doc));
+
+    } finally {
+        await client.close();
+    }
+}
+module.exports = testMongoConnection;
+
+```
+{% endcode %}
+
+{% hint style="warning" %}
+Не кодуйте спеціальні символи у своєму паролі, якщо ви використовуєте свій пароль за межами URI рядка підключення (наприклад, вставляючи його в[`mongosh`](https://www.mongodb.com/docs/mongodb-shell/#mongodb-binary-bin.mongosh)).
+{% endhint %}
+
+В майбутньому ми будемо використовувати бібліотеку Mongoose
+
+### Встановіть Mongoose <a href="#install_mongoose" id="install_mongoose"></a>
+
+Відкрийте командний рядок і перейдіть до каталогу, де ви створили скелет веб-сайту локальної бібліотеки . Введіть таку команду, щоб установити `Mongoose` (і його залежності) і додати її до свого файлу **`package.json.`**
+
+{% code lineNumbers="true" %}
+```bash
+npm install mongoose
+```
+{% endcode %}
+
+### [Підключіться до MongoDB](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express\_Nodejs/mongoose#connect\_to\_mongodb) <a href="#connect_to_mongodb" id="connect_to_mongodb"></a>
+
+Відкрийте **/app.js** (у кореневій папці вашого проекту) і скопіюйте наведений нижче текст, де ви оголошуєте _об’єкт програми Express_ (після рядка `const app = express();`). Замініть рядок URL-адреси бази даних (' _insert\_your\_database\_url\_here_ ') на URL-адресу розташування, яка представляє вашу власну базу даних (тобто використовуючи інформацію з _mongoDB Atlas_ ).
+
+{% code lineNumbers="true" %}
+```javascript
+// Import the mongoose module
+const mongoose = require("mongoose");
+
+// Set up default mongoose connection
+const mongoDB = "mongodb://127.0.0.1/my_database";
+mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
+
+// Get the default connection
+const db = mongoose.connection;
+
+// Bind connection to error event (to get notification of connection errors)
+db.on("error", console.error.bind(console, "MongoDB connection error:"));
+```
+{% endcode %}
+
+Цей код створює типове з’єднання з базою даних і прив’язується до події помилки (таким чином помилки будуть виведені на консоль).
+
+Ви можете отримати `Connection`об’єкт за замовчуванням за допомогою `mongoose.connection`. `Connection`Після підключення в екземплярі запускається подія open .
+
+{% hint style="info" %}
+Якщо вам потрібно створити додаткові підключення, ви можете використовувати `mongoose.createConnection()`. Це приймає ту саму форму URI бази даних (з хостом, базою даних, портом, параметрами тощо), як `connect()`і повертає `Connection`об’єкт).
+{% endhint %}
+
+## Визначення та створення моделей <a href="#defining_and_creating_models" id="defining_and_creating_models"></a>
+
+Наведений нижче фрагмент коду показує, як можна визначити просту схему. Спочатку ви `require()`мангуст, а потім використовуєте конструктор Schema, щоб створити новий екземпляр схеми, визначаючи різні поля всередині нього в параметрі об’єкта конструктора.
+
+\
+
+
+{% code lineNumbers="true" %}
+```javascript
+// Require Mongoose
+const mongoose = require("mongoose");
+
+// Define a schema
+const Schema = mongoose.Schema;
+
+const SomeModelSchema = new Schema({
+  a_string: String,
+  a_date: Date,
+});
+
+```
+{% endcode %}
+
+У наведеному вище випадку ми маємо лише два поля, рядок і дату. У наступних розділах ми покажемо деякі інші типи полів, перевірку та інші методи.
+
+### **Створення моделі**
+
+Моделі створюються зі схем за допомогою `mongoose.model()`методу:
+
+{% code lineNumbers="true" %}
+```javascript
+// Define schema
+const Schema = mongoose.Schema;
+
+const SomeModelSchema = new Schema({
+  a_string: String,
+  a_date: Date,
+});
+
+// Compile model from schema
+const SomeModel = mongoose.model("SomeModel", SomeModelSchema);
+```
+{% endcode %}
+
+Перший аргумент — це однина назви колекції, яка буде створена в моделі (Mongoose створить колекцію бази даних для наведеної вище моделі _SomeModel_ вище), а другий аргумент — це схема, яку ви хочете використовувати для створення моделі.
+
+{% hint style="info" %}
+Визначивши класи моделі, ви можете використовувати їх для створення, оновлення або видалення записів, а також виконувати запити для отримання всіх записів або окремих підмножин записів.
+{% endhint %}
+
+### **Типи схем (поля)**
+
+Схема може мати довільну кількість полів — кожне з них представляє поле в документах, що зберігаються в _MongoDB_ . Нижче наведено приклад схеми, що показує багато загальних типів полів і те, як вони оголошуються.
+
+{% code lineNumbers="true" %}
+```javascript
+const schema = new Schema({
+  name: String,
+  binary: Buffer,
+  living: Boolean,
+  updated: { type: Date, default: Date.now() },
+  age: { type: Number, min: 18, max: 65, required: true },
+  mixed: Schema.Types.Mixed,
+  _someId: Schema.Types.ObjectId,
+  array: [],
+  ofString: [String], // You can also have an array of each of the other types too.
+  nested: { stuff: { type: String, lowercase: true, trim: true } },
+});
+```
+{% endcode %}
+
+Більшість [SchemaTypes](https://mongoosejs.com/docs/schematypes.html) (дескриптори після "type:" або після імен полів) не потребують пояснень. Винятками є:
+
+* `ObjectId`: представляє конкретні екземпляри моделі в базі даних. Наприклад, книга може використовувати це для представлення об’єкта автора. Це фактично міститиме унікальний ідентифікатор ( `_id`) для вказаного об’єкта. Ми можемо використовувати цей `populate()`метод, щоб за потреби отримати пов’язану інформацію.
+* [`Mixed`](https://mongoosejs.com/docs/schematypes.html#mixed): довільний тип схеми.
+* `[]`: масив елементів. Над цими моделями можна виконувати операції з масивами JavaScript (push, pop, unshift тощо). У наведених вище прикладах показано масив об’єктів без указаного типу та масив `String`об’єктів, але ви можете мати масив об’єктів будь-якого типу.
+
+Код також показує обидва способи оголошення поля:
+
+* _Ім’я_ та _тип_ поля як пара ключ-значення (тобто як це робиться з полями `name`, `binary`та `living`).
+* _Ім’я_ поля з об’єктом, що визначає `type`, та будь-які інші _параметри_ поля. Варіанти включають такі речі, як:
+  * значення за замовчуванням.
+  * вбудовані валідатори (наприклад, максимальні/мінімальні значення) і спеціальні функції перевірки.
+  * Чи обов’язкове поле
+  * Чи `String`мають поля автоматично встановлюватися на нижній, верхній регістр або обрізані (наприклад, `{ type: String, lowercase: true, trim: true }`)
+
+Щоб отримати додаткові відомості про параметри, перегляньте [SchemaTypes](https://mongoosejs.com/docs/schematypes.html) (документи Mongoose).
+
+### **Перевірка**
+
+Mongoose надає вбудовані та спеціальні валідатори, а також синхронні та асинхронні валідатори. Це дозволяє вказати як прийнятний діапазон значень, так і повідомлення про помилку для помилки перевірки в усіх випадках.
+
+Вбудовані валідатори включають:
+
+* Усі [SchemaType](https://mongoosejs.com/docs/schematypes.html) мають вбудований [необхідний](https://mongoosejs.com/docs/api.html#schematype\_SchemaType-required) валідатор. Це використовується для визначення того, чи потрібно заповнювати поле для збереження документа.
+* [Числа](https://mongoosejs.com/docs/api.html#schema-number-js) мають валідатори [min](https://mongoosejs.com/docs/api.html#schema\_number\_SchemaNumber-min) і [max .](https://mongoosejs.com/docs/api.html#schema\_number\_SchemaNumber-max)
+* [Рядки](https://mongoosejs.com/docs/api.html#schema-string-js) мають:
+  * [enum](https://mongoosejs.com/docs/api.html#schema\_string\_SchemaString-enum) : визначає набір дозволених значень для поля.
+  * [match](https://mongoosejs.com/docs/api.html#schema\_string\_SchemaString-match) : визначає регулярний вираз, якому має відповідати рядок.
+  * [maxLength](https://mongoosejs.com/docs/api.html#schema\_string\_SchemaString-maxlength) і [minLength](https://mongoosejs.com/docs/api.html#schema\_string\_SchemaString-minlength) для рядка.
+
+Наведений нижче приклад (дещо змінений на основі документів Mongoose) показує, як можна вказати деякі типи валідаторів і повідомлення про помилки:
+
+{% code lineNumbers="true" %}
+```javascript
+const breakfastSchema = new Schema({
+  eggs: {
+    type: Number,
+    min: [6, "Too few eggs"],
+    max: 12,
+    required: [true, "Why no eggs?"],
+  },
+  drink: {
+    type: String,
+    enum: ["Coffee", "Tea", "Water"],
+  },
+});
+```
+{% endcode %}
+
+Щоб отримати повну інформацію про перевірку полів, перегляньте [перевірку](https://mongoosejs.com/docs/validation.html) (документи Mongoose).
+
+### **Віртуальні властивості**
+
+Віртуальні властивості — це властивості документа, які ви можете отримати та встановити, але які не зберігаються в MongoDB. Геттери корисні для форматування або об’єднання полів, тоді як сетери корисні для декомпозиції одного значення на кілька значень для зберігання. У прикладі в документації створюється (і деконструюється) віртуальна властивість повного імені з полів імені та прізвища, що простіше та чистіше, ніж конструювати повне ім’я кожного разу, коли воно використовується в шаблоні.
+
+{% hint style="info" %}
+**В**іртуальна властивість у бібліотеці, щоб визначити унікальну URL-адресу для кожного запису моделі за допомогою шляху та значення запису `_id`.
+{% endhint %}
+
+Для отримання додаткової інформації див. [Віртуальні](https://mongoosejs.com/docs/guide.html#virtuals) (документація Mongoose).
+
+### **Методи та помічники запитів**
+
+Схема також може мати [методи екземплярів](https://mongoosejs.com/docs/guide.html#methods) , [статичні методи](https://mongoosejs.com/docs/guide.html#statics) та [помічники запитів](https://mongoosejs.com/docs/guide.html#query-helpers) . Метод екземпляра та статичний методи схожі, але з тією очевидною різницею, що метод екземпляра пов’язаний із певним записом і має доступ до поточного об’єкта. Помічники запитів дозволяють вам розширити [API конструктора ланцюжкових запитів](https://mongoosejs.com/docs/queries.html) mongoose (наприклад, дозволяючи додавати запит "byName" на додаток до методів `find()`, `findOne()`і ).`findById()`
+
+### Використання моделей <a href="#using_models" id="using_models"></a>
+
+Модель представляє набір документів у базі даних, за якими можна шукати, тоді як екземпляри моделі представляють окремі документи, які можна зберігати та отримувати.
+
+Для отримання додаткової інформації див.: [Моделі](https://mongoosejs.com/docs/models.html) (документи Mongoose).
+
+### **Створення та редагування документів**
