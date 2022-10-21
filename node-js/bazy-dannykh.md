@@ -64,7 +64,7 @@
 
 Екземпляр – це таблиця з рядками або стовпцями.
 
-<figure><img src="../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (1) (2).png" alt=""><figcaption></figcaption></figure>
 
 Схема визначає структуру, як ім’я відношення, тип кожного стовпця та ім’я.
 
@@ -78,7 +78,7 @@
 
 Хмарна база даних дозволяє вам зберігати, керувати та отримувати їх структуровані, неструктуровані дані через хмарну платформу. Ці дані доступні через Інтернет. Хмарні бази даних також називають базою даних як послуга (DBaaS), оскільки вони пропонуються як керована служба.
 
-<figure><img src="../.gitbook/assets/image (3).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (3) (1).png" alt=""><figcaption></figcaption></figure>
 
 **Кращі варіанти хмарних баз даних:**
 
@@ -110,7 +110,7 @@
 
 Деякі приклади системи баз даних NoSQL з їх категорією:
 
-<figure><img src="../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
 
 * MongoDB, CouchDB, Cloudant **(на основі документів)**
 * Memcached, Redis, Coherence **(сховище ключ-значення)**

@@ -71,16 +71,10 @@ title: 'Titanic',
 Примітка. За бажанням ви можете налаштувати базу даних MongoDb локально, завантаживши та встановивши [**відповідні двійкові файли для вашої системи**](https://www.mongodb.com/download-center/community/releases). Решта інструкцій у цій статті будуть подібними, за винятком URL-адреси бази даних, яку ви вказуєте під час підключення. Зверніть увагу, однак, що [**підручник Express Tutorial Part 7: Deploying to Production**](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express\_Nodejs/deployment) вимагає певної форми віддаленої бази даних, оскільки безкоштовний рівень служби [**Heroku**](https://www.heroku.com/) не забезпечує постійного зберігання. Тому настійно рекомендується використовувати [**MongoDB Atlas**](https://www.mongodb.com/atlas/database) .
 {% endhint %}
 
-Спершу вам потрібно буде [create an account](https://www.mongodb.com/cloud/atlas/register) у MongoDB Atlas (це безкоштовно, і лише потрібно ввести основні контактні дані та прийняти їхні умови обслуговування).
-
-****\
+Спершу вам потрібно буде [create an account](https://www.mongodb.com/cloud/atlas/register) у MongoDB Atlas (це безкоштовно, і лише потрібно ввести основні контактні дані та прийняти їхні умови обслуговування).\
 ****
 
-<figure><img src="https://lh4.googleusercontent.com/0pIf_SBPnPLRd8e-1Y021WF6cgP1XRgLN65-nKNpduTVXR_n53koix7XmSrKWipMEUDm6MMdVuLxiu1onPjeU0K4eSg-JdHpw8OHvGr1L1GxAmQQ9_kIXYi--jmWvF16L830sWSFxGHOn550mNgKnKEnlKTB032cq_bBb0cVXA5MXTtthR6QGZLFaQ" alt=""><figcaption><p>Створення акаунту</p></figcaption></figure>
-
-\
-\
-
+<figure><img src="https://lh4.googleusercontent.com/0pIf_SBPnPLRd8e-1Y021WF6cgP1XRgLN65-nKNpduTVXR_n53koix7XmSrKWipMEUDm6MMdVuLxiu1onPjeU0K4eSg-JdHpw8OHvGr1L1GxAmQQ9_kIXYi--jmWvF16L830sWSFxGHOn550mNgKnKEnlKTB032cq_bBb0cVXA5MXTtthR6QGZLFaQ" alt=""><figcaption><p>Створення акаунту<br></p></figcaption></figure>
 
 <figure><img src="https://lh6.googleusercontent.com/0KIwBOfVf8HCVkBfjhZaWNIo-Mb1QDANrNI6ZbxcrKMQgMaHRd4Cn3G0p69lceNCmruHawnPMadyCWsQ8U6h6KU3qq0apZHJ07sRpqS8speqo-1sW-ap6ahJDf47xZ9QpNxORrvoWIfx-Wdqg5wros8s-aeLb9n5-Msqol0HPmzAI_6olrEpWFj7yA" alt=""><figcaption><p>Додаткові дані реєстрації</p></figcaption></figure>
 
@@ -96,8 +90,24 @@ title: 'Titanic',
 
 2\) Це відкриє екран _Deploy a cloud database._  Натисніть кнопку « **Create** » під параметром       « _Shared_».
 
-<figure><img src="../../.gitbook/assets/image (7).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (3).png" alt=""><figcaption></figcaption></figure>
 
 3\) __ Відкриється екран _Create a Shared Cluster ._
 
-<figure><img src="../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+
+* Виберіть будь-якого постачальника в розділі _Cloud Provider & Region_ . Різні регіони пропонують різних провайдерів.
+* _Cluster Tier_ та _Additional Settings_ змінювати не потрібно. Ви можете змінити назву свого Cluster в розділі _Cluster Name_.  Ми називаємо це `Cluster0`для цього підручника.
+* Натисніть кнопку **Create Cluster** (створення кластера займе кілька хвилин).
+
+4\) Відкриється розділ S_ecurity Quickstart_.
+
+<figure><img src="../../.gitbook/assets/Screenshot_2022-10-21_13-22-36.png" alt=""><figcaption><p>Створення користувача</p></figcaption></figure>
+
+<figure><img src="../../.gitbook/assets/Screenshot_2022-10-21_13-23-15.png" alt=""><figcaption><p>Форма підключення</p></figcaption></figure>
+
+Введіть ім'я користувача та пароль. Не забудьте скопіювати та безпечно зберегти облікові дані, оскільки вони нам знадобляться пізніше. Натисніть кнопку **Create User**.
+
+{% hint style="info" %}
+Уникайте використання спеціальних символів у паролі користувача MongoDB, оскільки mongoose може не аналізувати рядок підключення належним чином.
+{% endhint %}
