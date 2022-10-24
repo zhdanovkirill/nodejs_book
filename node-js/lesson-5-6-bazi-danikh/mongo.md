@@ -502,19 +502,17 @@ Athlete.find()
 
 Метод [find()](https://mongoosejs.com/docs/api.html#query\_Query-find) отримує всі відповідні записи, але часто потрібно отримати лише один збіг. Наступні методи запитують один запис:
 
-* [`findById()`](https://mongoosejs.com/docs/api.html#model\_Model.findById): знаходить документ із зазначеним `id`(кожен документ має унікальний `id`).
-* [`findOne()`](https://mongoosejs.com/docs/api.html#query\_Query-findOne): знаходить один документ, який відповідає вказаним критеріям.
-* [`findByIdAndRemove()`](https://mongoosejs.com/docs/api.html#model\_Model.findByIdAndRemove), [`findByIdAndUpdate()`](https://mongoosejs.com/docs/api.html#model\_Model.findByIdAndUpdate), [`findOneAndRemove()`](https://mongoosejs.com/docs/api.html#query\_Query-findOneAndRemove), [`findOneAndUpdate()`](https://mongoosejs.com/docs/api.html#query\_Query-findOneAndUpdate): знаходить окремий документ за `id`критерієм або оновлює або видаляє його. Це корисні зручні функції для оновлення та видалення записів.
+* `findById()`: знаходить документ із зазначеним `id`(кожен документ має унікальний `id`).
+* `findOne()`: знаходить один документ, який відповідає вказаним критеріям.
+* `findByIdAndRemove()`, `findByIdAndUpdate()`, `findOneAndRemove()`, `findOneAndUpdate()`: знаходить окремий документ за `id`критерієм або оновлює або видаляє його. Це корисні зручні функції для оновлення та видалення записів.
 
 {% hint style="info" %}
-Існує також [`count()`](https://mongoosejs.com/docs/api.html#model\_Model.count)метод, за допомогою якого можна отримати кількість елементів, які відповідають умовам. Це корисно, якщо ви хочете виконати підрахунок без фактичного отримання записів.
+Існує також `count()`метод, за допомогою якого можна отримати кількість елементів, які відповідають умовам. Це корисно, якщо ви хочете виконати підрахунок без фактичного отримання записів.
 {% endhint %}
-
-За допомогою запитів можна зробити багато іншого. Для отримання додаткової інформації див.: [Queries](https://mongoosejs.com/docs/queries.html) (документи Mongoose).
 
 ### **Робота з супутніми документами — населення**
 
-Ви можете створювати посилання з одного документа/примірника моделі на інший за допомогою `ObjectId`поля схеми або з одного документа на багато за допомогою масиву `ObjectIds`. Поле зберігає ідентифікатор пов’язаної моделі. Якщо вам потрібен фактичний вміст пов’язаного документа, ви можете використовувати [`populate()`](https://mongoosejs.com/docs/api.html#query\_Query-populate)метод у запиті, щоб замінити ідентифікатор фактичними даними.
+Ви можете створювати посилання з одного документа/примірника моделі на інший за допомогою `ObjectId`поля схеми або з одного документа на багато за допомогою масиву `ObjectIds`. Поле зберігає ідентифікатор пов’язаної моделі. Якщо вам потрібен фактичний вміст пов’язаного документа, ви можете використовувати `populate()`метод у запиті, щоб замінити ідентифікатор фактичними даними.
 
 Наприклад, наведена нижче схема визначає авторів і історії. Кожен автор може мати кілька історій, які ми представляємо як масив `ObjectId`. У кожної історії може бути один автор. Властивість `ref`повідомляє схемі, яку модель можна призначити цьому полю.
 
@@ -577,7 +575,7 @@ Story.findOne({ title: "Bob goes sledding" })
 {% endcode %}
 
 {% hint style="info" %}
-Уважні читачі помітять, що ми додали автора до нашої історії, але ми нічого не зробили, щоб додати нашу історію до нашого `stories`масиву авторів. Як тоді ми можемо отримати всі історії певного автора? Одним із способів було б додати нашу історію до масиву історій, але це призведе до того, що ми матимемо два місця, де потрібно зберігати інформацію про авторів та історії.
+Зауважимо, що ми додали автора до нашої історії, але ми нічого не зробили, щоб додати нашу історію до нашого `stories`масиву авторів. Одним із способів було б додати нашу історію до масиву історій, але це призведе до того, що ми матимемо два місця, де потрібно зберігати інформацію про авторів та історії.
 
 Кращий спосіб — отримати `_id`автора , а потім використати його для пошуку в полі автора в усіх історіях _._`find()`
 
@@ -591,7 +589,7 @@ Story.find({ author: bob._id }).exec((err, stories) => {
 {% endcode %}
 {% endhint %}
 
-Це майже все, що вам потрібно знати про роботу з пов'язаними елементами для цього _tutorial._ Для отримання більш детальної інформації див. [Population](https://mongoosejs.com/docs/populate.html) (документи Mongoose).
+Це майже все, що вам потрібно знати про роботу з пов'язаними елементами для цього _tutorial._&#x20;
 
 ### Одна схема/модель на файл
 
@@ -628,6 +626,212 @@ const SomeModel = require("../models/somemodel");
 SomeModel.find(callback_function);
 ```
 {% endcode %}
+
+### Підключення до MongoDB <a href="#connect_to_mongodb" id="connect_to_mongodb"></a>
+
+Відкрийте **/app.js** (у кореневій папці вашого проекту) і скопіюйте наведений нижче текст, де ви оголошуєте _об’єкт програми Express_ (після рядка `const app = express();`). Замініть рядок URL - адреси бази даних (' _insert\_your\_database\_url\_here_ ') на URL- адресу розташування, яка представляє вашу власну базу даних (тобто використовуючи інформацію з _mongoDB Atlas_ ).
+
+{% code lineNumbers="true" %}
+```javascript
+// Set up mongoose connection
+const mongoose = require("mongoose");
+const mongoDB = "insert_your_database_url_here";
+mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
+const db = mongoose.connection;
+db.on("error", console.error.bind(console, "MongoDB connection error:"));
+```
+{% endcode %}
+
+Як обговорювалося в посібнику Mongoose вище , цей код створює типове з’єднання з базою даних і прив’язується до події помилки (таким чином помилки будуть виведені на консоль).
+
+### Визначення схеми локальної бібліотеки <a href="#defining_the_locallibrary_schema" id="defining_the_locallibrary_schema"></a>
+
+Почніть із створення папки для наших моделей у корені проекту ( **/models** ), а потім створіть окремі файли для кожної з моделей:
+
+{% code lineNumbers="true" %}
+```javascript
+/express-locallibrary-tutorial  // the project root
+  /models
+    author.js
+    book.js
+    bookinstance.js
+    genre.js
+```
+{% endcode %}
+
+### Авторська модель <a href="#author_model" id="author_model"></a>
+
+Скопіюйте `Author`наведений нижче код схеми та вставте його у свій файл **./models/author.js** . Схема визначає автора як такого, що має `String`SchemaTypes для імені та прізвища (обов’язково, максимум 100 символів) і `Date`поля для дат народження та смерті.
+
+{% code lineNumbers="true" %}
+```javascript
+const mongoose = require("mongoose");
+
+const Schema = mongoose.Schema;
+
+const AuthorSchema = new Schema({
+  first_name: { type: String, required: true, maxLength: 100 },
+  family_name: { type: String, required: true, maxLength: 100 },
+  date_of_birth: { type: Date },
+  date_of_death: { type: Date },
+});
+
+// Virtual for author's full name
+AuthorSchema.virtual("name").get(function () {
+  // To avoid errors in cases where an author does not have either a family name or first name
+  // We want to make sure we handle the exception by returning an empty string for that case
+  let fullname = "";
+  if (this.first_name && this.family_name) {
+    fullname = `${this.family_name}, ${this.first_name}`;
+  }
+  if (!this.first_name || !this.family_name) {
+    fullname = "";
+  }
+  return fullname;
+});
+
+// Virtual for author's URL
+AuthorSchema.virtual("url").get(function () {
+  // We don't use an arrow function as we'll need the this object
+  return `/catalog/author/${this._id}`;
+});
+
+// Export model
+module.exports = mongoose.model("Author", AuthorSchema);
+```
+{% endcode %}
+
+Створено віртуальну для AuthorSchema під назвою «url», яка повертає абсолютну URL-адресу, необхідну для отримання конкретного екземпляра моделі — ми будемо використовувати властивість у наших шаблонах щоразу, коли нам потрібно буде отримати посилання на певного автора.
+
+{% hint style="info" %}
+Оголошення наших URL-адрес як віртуальних у схемі є гарною ідеєю, оскільки тоді URL-адресу для елемента потрібно буде змінити лише в одному місці. На даний момент посилання з використанням цієї URL-адреси не працюватиме, оскільки ми не маємо коду обробки маршрутів для окремих екземплярів моделі.&#x20;
+{% endhint %}
+
+В кінці модуля ми експортуємо модель.
+
+### Книжкова модель <a href="#book_model" id="book_model"></a>
+
+Скопіюйте `Book`наведений нижче код схеми та вставте його у свій файл **./models/book.js** . Більшість із цього подібна до моделі автора — ми оголосили схему з кількома рядковими полями та віртуальним для отримання URL-адрес певних записів книги, і ми експортували модель.
+
+{% code lineNumbers="true" %}
+```javascript
+const mongoose = require("mongoose");
+
+const Schema = mongoose.Schema;
+
+const BookSchema = new Schema({
+  title: { type: String, required: true },
+  author: { type: Schema.Types.ObjectId, ref: "Author", required: true },
+  summary: { type: String, required: true },
+  isbn: { type: String, required: true },
+  genre: [{ type: Schema.Types.ObjectId, ref: "Genre" }],
+});
+
+// Virtual for book's URL
+BookSchema.virtual("url").get(function () {
+  // We don't use an arrow function as we'll need the this object
+  return `/catalog/book/${this._id}`;
+});
+
+// Export model
+module.exports = mongoose.model("Book", BookSchema);
+```
+{% endcode %}
+
+Головна відмінність тут полягає в тому, що ми створили дві посилання на інші моделі:
+
+* author є посиланням на окремий `Author`об’єкт моделі та є обов’язковим;
+* genre – це посилання на масив `Genre`модельних об’єктів. Ми ще не задекларували цей об'єкт!
+
+### Модель BookInstance <a href="#bookinstance_model" id="bookinstance_model"></a>
+
+Скопіюйте `BookInstance`код схеми, показаний нижче, і вставте його у свій файл **./models/bookinstance.js** . Представляє `BookInstance`певний примірник книги, який хтось може позичити, і містить інформацію про те, чи доступний примірник, коли очікується його повернення, а також відомості про вихідні дані (або версії).
+
+{% code lineNumbers="true" %}
+```javascript
+const mongoose = require("mongoose");
+
+const Schema = mongoose.Schema;
+
+const BookInstanceSchema = new Schema({
+  book: { type: Schema.Types.ObjectId, ref: "Book", required: true }, // reference to the associated book
+  imprint: { type: String, required: true },
+  status: {
+    type: String,
+    required: true,
+    enum: ["Available", "Maintenance", "Loaned", "Reserved"],
+    default: "Maintenance",
+  },
+  due_back: { type: Date, default: Date.now },
+});
+
+// Virtual for bookinstance's URL
+BookInstanceSchema.virtual("url").get(function () {
+  // We don't use an arrow function as we'll need the this object
+  return `/catalog/bookinstance/${this._id}`;
+});
+
+// Export model
+module.exports = mongoose.model("BookInstance", BookInstanceSchema);
+```
+{% endcode %}
+
+Нові речі, які ми показуємо тут, це параметри полів:
+
+* `enum`: Це дозволяє нам встановити дозволені значення рядка. У цьому випадку ми використовуємо його для визначення статусу доступності наших книг (використання переліку означає, що ми можемо запобігти орфографічним помилкам і довільним значенням для нашого статусу);
+* `default`: ми використовуємо значення за замовчуванням, щоб встановити стан за замовчуванням для новостворених екземплярів книги на обслуговування та `due_back`дату за замовчуванням на `now`(зверніть увагу, як ви можете викликати функцію Date під час встановлення дати!).
+
+Все інше повинно бути знайоме з нашої попередньої схеми.
+
+### Жанрова модель - виклик! <a href="#genre_model_-_challenge" id="genre_model_-_challenge"></a>
+
+Відкрийте файл **./models/genre.js** і створіть схему для зберігання жанрів (категорія книги, наприклад, художня чи науково-популярна, романтика чи військова історія тощо).
+
+Визначення буде дуже подібним до інших моделей:
+
+* Модель повинна мати `String`SchemaType, що викликається `name`для опису жанру;
+* Це ім’я має бути обов’язковим і містити від 3 до 100 символів;
+* Оголошіть [віртуальний](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express\_Nodejs/mongoose#virtual\_properties) для URL-адреси жанру з назвою `url;`
+* Експортуйте модель.
+
+### Тестування — створити кілька предметів <a href="#testing_-_create_some_items" id="testing_-_create_some_items"></a>
+
+Щоб перевірити моделі (а також створити кілька прикладів книг та інших елементів, які ми зможемо використовувати), зараз запустимо _незалежний_ сценарій для створення елементів кожного типу:
+
+* Завантажте (або іншим способом створіть) файл [populatedb.js](https://raw.githubusercontent.com/mdn/express-locallibrary-tutorial/main/populatedb.js) у своєму _каталозі express-locallibrary-tutorial_ (на тому ж рівні, що й `package.json`).
+
+{% hint style="info" %}
+&#x20;Вам не потрібно знати, як `populatedb.js`працює; він просто додає зразки даних до бази даних.
+{% endhint %}
+
+* Введіть наступні команди в кореневій папці проекту, щоб інсталювати _асинхронний_ модуль, який вимагається сценарієм.
+
+```bash
+npm install async
+```
+
+* Запустіть сценарій за допомогою node у командному рядку, передавши URL-адресу вашої бази даних _MongoDB_ (ту саму, на яку ви замінили заповнювач _insert\_your\_database\_url\_here_`app.js` раніше):
+
+```bash
+node populatedb <your mongodb url>
+```
+
+{% hint style="info" %}
+У деяких операційних системах/терміналах може знадобитися взяти URL-адресу бази даних у подвійні (") або одинарні (') лапки.
+{% endhint %}
+
+* Сценарій має виконуватися до кінця, відображаючи елементи під час їх створення в терміналі.
+
+{% hint style="info" %}
+Перейдіть до своєї бази даних на mongoDB Atlas (на вкладці « _Колекції_ »). Тепер ви зможете детально переглядати окремі колекції книг, авторів, жанрів і екземплярів книг і переглядати окремі документи.
+{% endhint %}
+
+### Резюме <a href="#summary" id="summary"></a>
+
+На данному занятті ми дізналися дещо про бази даних і ORM на Node/Express, а також багато дізналися про те, як визначаються схема та моделі Mongoose. Потім ми використали цю інформацію для розробки та реалізації моделей `Book`, `BookInstance`, `Author`і для веб-сайту _LocalLibrary_ .`Genre`Були прготестовані моделі, створивши декілька екземплярів (за допомогою окремого сценарію).
+
+\
+
 
 \
 
