@@ -21,7 +21,4 @@
   * [Home work 4](home-work/home-work-4.md)
   * [Home work 5](home-work/home-work-5.md)
   * [Home work 6](home-work/home-work-6.md)
-  * [Home work 7](home-work/home-work-7.md)
-  * [Home work 8](home-work/home-work-8.md)
-  * [Home work 9](home-work/home-work-9.md)
   * [Module](home-work/module.md)
