@@ -8,7 +8,7 @@
 
 #### Невеличке порівняння SQL з MongoDB <a href="#nevelichke-porivnyannya-sql-z-mongodb" id="nevelichke-porivnyannya-sql-z-mongodb"></a>
 
-<figure><img src="../../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (3).png" alt=""><figcaption></figcaption></figure>
 
 Більше деталей можно знайти [тут](https://www.postgresql.org/docs/) а також про р.
 

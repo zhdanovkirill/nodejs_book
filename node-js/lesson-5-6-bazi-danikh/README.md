@@ -110,7 +110,7 @@
 
 Деякі приклади системи баз даних NoSQL з їх категорією:
 
-<figure><img src="../../.gitbook/assets/image (1) (3).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1) (4).png" alt=""><figcaption></figcaption></figure>
 
 * MongoDB, CouchDB, Cloudant **(на основі документів)**
 * Memcached, Redis, Coherence **(сховище ключ-значення)**
