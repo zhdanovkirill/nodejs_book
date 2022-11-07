@@ -8,7 +8,7 @@
 
 Для операційної системи Windows або MacOS установка Node js здійснюється завантаженим дистрибутивом у форматі msi або pkg відповідно. У Unix-системах ефективнішим буде використання пакетного менеджера.
 
-<figure><img src="../.gitbook/assets/image (4) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (4).png" alt=""><figcaption></figcaption></figure>
 
 {% hint style="warning" %}
 Якщо вам необхідно встановити Node js на систему, відмінну від тієї, з якою ви зайшли на офіційний сайт, перейдіть в розділ[`Downloads`](https://nodejs.org/en/download/).

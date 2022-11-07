@@ -4,7 +4,7 @@
 
 З’єднання WebSocket – це тонкий транспортний рівень, побудований поверх стеку [TCP/IP](https://en.wikipedia.org/wiki/Transmission\_Control\_Protocol) пристрою . Це максимально близький до необробленого рівня зв’язку TCP, хоча він додає кілька абстракцій, щоб усунути певне тертя та задовольнити той факт, що Інтернет має додаткові міркування щодо безпеки, які необхідно враховувати, щоб захистити обох споживачів і постачальників послуг.
 
-<figure><img src="../.gitbook/assets/image (4).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
 
 ## Long polling
 
@@ -142,11 +142,13 @@ socket.onerror = function(error) {
 
 Тепер давайте поговоримо докладніше.
 
-### [Відкриття веб-сокету](https://learn.javascript.ru/websocket#otkrytie-veb-soketa)
+### Відкриття веб-сокету
 
 Коли `new WebSocket(url)`створений, він одразу сам починає встановлювати з'єднання.
 
 Браузер, за допомогою спеціальних заголовків, запитує сервер: Ти підтримуєш Websocket? і якщо сервер відповідає так, вони починають працювати за протоколом WebSocket, який вже не є HTTP.
+
+<figure><img src="../.gitbook/assets/websocket-handshake.svg" alt=""><figcaption></figcaption></figure>
 
 Ось приклад заголовків для запиту, що робить `new WebSocket("wss://javascript.info/chat")`.
 
@@ -166,9 +168,11 @@ Sec-WebSocket-Version: 13
 * `Sec-WebSocket-Key`- Випадковий ключ, створений браузером для забезпечення безпеки.
 * `Sec-WebSocket-Version`- Версія протоколу WebSocket, поточна версія 13.
 
-Запит WebSocket не можна емулювати
+{% hint style="info" %}
+Запит WebSocket не можна емулювати!
 
 Ми не можемо використовувати `XMLHttpRequest`або `fetch`створити такий HTTP-запит, тому що JavaScript не дозволяє встановлювати такі заголовки.
+{% endhint %}
 
 Якщо сервер згоден перейти на WebSocket, то він повинен відправити у відповідь код 101:
 
@@ -183,7 +187,7 @@ Sec-WebSocket-Accept: hsBlbuDTkk24srzEOTBUlZAlC2g=
 
 Після цього дані передаються за протоколом WebSocket, і невдовзі ми побачимо його структуру (фрейми). І це зовсім не HTTP.
 
-#### [Розширення та підпротоколи](https://learn.javascript.ru/websocket#rasshireniya-i-podprotokoly)
+### Розширення та підпротоколи
 
 Можуть бути додаткові заголовки `Sec-WebSocket-Extensions`і описи `Sec-WebSocket-Protocol`розширення і підпротоколи.
 
@@ -227,7 +231,7 @@ Sec-WebSocket-Protocol: soap
 
 Тут сервер відповідає, що підтримує розширення – deflate-frame і може використовувати лише протокол SOAP із усього списку запитаних підпротоколів.
 
-### [Передача даних](https://learn.javascript.ru/websocket#peredacha-dannyh)
+### Передача даних
 
 Потік даних у WebSocket складається з «фреймів», фрагментів даних, які можуть бути надіслані будь-якою стороною, та які можуть бути наступними видами:
 
@@ -242,7 +246,9 @@ Sec-WebSocket-Protocol: soap
 
 Виклик `socket.send(body)`приймає `body`у вигляді рядка або будь-якому бінарному форматі, включаючи `Blob`, `ArrayBuffer`та інші. Додаткових налаштувань не потрібно, просто надсилаємо у будь-якому форматі.
 
-**При отриманні даних текст завжди надходить у вигляді рядка. А для бінарних даних ми можемо вибрати один із двох форматів: `Blob`або `ArrayBuffer`.**
+{% hint style="info" %}
+При отриманні даних текст завжди надходить у вигляді рядка. А для бінарних даних ми можемо вибрати один із двох форматів: `Blob`або `ArrayBuffer`**.**
+{% endhint %}
 
 Це задається властивістю `socket.binaryType`, за умовчанням воно одно `"blob"`, так що бінарні дані надходять у вигляді `Blob`об'єктів.
 
