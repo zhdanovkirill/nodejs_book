@@ -355,7 +355,7 @@ await transporter.sendMail({
 4. **Незалежність від бази даних.** Ви можете змінити Oracle або SQL Server на MongoDB, BigTable, CouchDB або ще щось. Ваші бізнес-правила не пов'язані з базою даних.
 5. **Незалежність від будь-якого зовнішнього сервісу.** За фактом, ваші бізнес правила просто нічого не знають про зовнішній світ.
 
-<figure><img src="../.gitbook/assets/image (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (1) (3).png" alt=""><figcaption></figcaption></figure>
 
 Досягається така гнучкість за рахунок поділу програми на шари Service, Repository, Model. Можна виділити такі основні шари.&#x20;
 
