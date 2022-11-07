@@ -64,7 +64,7 @@
 
 Екземпляр – це таблиця з рядками або стовпцями.
 
-<figure><img src="../../.gitbook/assets/image (1) (2).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1) (2) (1).png" alt=""><figcaption></figcaption></figure>
 
 Схема визначає структуру, як ім’я відношення, тип кожного стовпця та ім’я.
 
@@ -110,7 +110,7 @@
 
 Деякі приклади системи баз даних NoSQL з їх категорією:
 
-<figure><img src="../../.gitbook/assets/image (1) (3).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1) (2).png" alt=""><figcaption></figcaption></figure>
 
 * MongoDB, CouchDB, Cloudant **(на основі документів)**
 * Memcached, Redis, Coherence **(сховище ключ-значення)**
