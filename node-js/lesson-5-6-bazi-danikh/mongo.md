@@ -153,7 +153,7 @@ title: 'Titanic',
 
 11\) Відкриється екран _Connect to Cluster._ Натисніть опцію «**Connect your application**».
 
-<figure><img src="../../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (2) (3).png" alt=""><figcaption></figcaption></figure>
 
 12\) Тепер вам буде показано екран _Connect to Cluster0._
 
