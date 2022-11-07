@@ -11,7 +11,7 @@
     * [Mongo](node-js/lesson-5-6-bazi-danikh/mongo.md)
     * [Postgres](node-js/lesson-5-6-bazi-danikh/postgres.md)
   * [Lesson 7 - Пользователи, авторизация](node-js/lesson-7-polzovateli-avtorizaciya.md)
-  * [Lesson 8 - Улучшаем приложение](node-js/lesson-8-uluchshaem-prilozhenie.md)
+  * [Lesson 8 - Покращуємо додаток](node-js/lesson-8-pokrashuyemo-dodatok.md)
   * [Lesson 9 - Чаты, непрерывная подгрузка и обмен данными](node-js/lesson-9-chaty-nepreryvnaya-podgruzka-i-obmen-dannymi.md)
   * [Lesson 10 - Развёртывание и запуск приложения](node-js/lesson-10-razvyortyvanie-i-zapusk-prilozheniya.md)
 * [Home Work](home-work/README.md)

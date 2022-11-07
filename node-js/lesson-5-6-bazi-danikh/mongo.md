@@ -94,7 +94,7 @@ title: 'Titanic',
 
 3\) __ Відкриється екран _Create a Shared Cluster ._
 
-<figure><img src="../../.gitbook/assets/image (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1) (1) (2).png" alt=""><figcaption></figcaption></figure>
 
 * Виберіть будь-якого постачальника в розділі _Cloud Provider & Region_ . Різні регіони пропонують різних провайдерів.
 * _Cluster Tier_ та _Additional Settings_ змінювати не потрібно. Ви можете змінити назву свого Cluster в розділі _Cluster Name_.  Ми називаємо це `Cluster0`для цього підручника.
