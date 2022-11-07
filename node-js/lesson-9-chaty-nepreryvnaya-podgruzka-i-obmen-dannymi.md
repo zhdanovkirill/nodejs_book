@@ -1,4 +1,4 @@
-# Lesson 9 - Чаты, непрерывная подгрузка и обмен данными
+# Lesson 9 - Чаты, завантаження  та обмін даними
 
 ## WebSockets <a href="#an-overview-of-web-sockets" id="an-overview-of-web-sockets"></a>
 
@@ -19,7 +19,7 @@ Long polling - потребує опитування запитів/відпов
 
 ## Server Sent Events (SSE) <a href="#an-overview-of-server-sent-events-sse" id="an-overview-of-server-sent-events-sse"></a>
 
-Події, надіслані сервером (SSE) , засновані на подіях DOM, надісланих сервером, які вперше були реалізовані в Opera 9. Ідея проста: браузер може підписатися на потік подій, створених сервером, отримуючи оновлення кожного разу, коли з’являється нова відбувається подія. Це призвело до народження популярного інтерфейсу EventSource, який приймає потокове з’єднання HTTP і зберігає з’єднання відкритим під час отримання з нього доступних даних.
+Події, надіслані сервером (SSE) , засновані на подіях DOM, надісланих сервером, які вперше були реалізовані в Opera 9. Ідея проста: браузер може підписатися на потік подій, створених сервером, отримуючи оновлення кожного разу, коли з’являється новий запит то відбувається подія. Це призвело до народження популярного інтерфейсу EventSource, який приймає потокове з’єднання HTTP і зберігає з’єднання відкритим під час отримання з нього доступних даних.
 
 З’єднання залишається відкритим (доки воно не отримає вказівку закрити) шляхом виклику [EventSource.close()](https://developer.mozilla.org/en-US/docs/Web/API/EventSource/close). SSE — це стандарт, який описує, як сервери можуть ініціювати передачу даних клієнтам після встановлення початкового підключення клієнта. Він забезпечує реалізацію потокової передачі XHR з ефективним використанням пам’яті.&#x20;
 
@@ -71,7 +71,7 @@ SSE розроблено для використання API JavaScript EventSou
 * SSE має обмеження щодо максимальної кількості відкритих підключень. Це може бути особливо болючим під час відкриття різних вкладок, оскільки обмеження встановлено для _кожного браузера_ та встановлено на дуже низьке число (6).
 * SSE односпрямована
 
-#### Після того я ознайомились з 3-ма альтернативами постійної передачі данних розглянемо більш детально одну с них а саме **Websockets**
+#### Після того як ознайомились з 3-ма альтернативами постійної передачі данних розглянемо більш детально одну з них, а саме -  **Websockets**
 
 ## WebSocket
 
@@ -112,20 +112,20 @@ let socket = new WebSocket("ws://javascript.info");
 let socket = new WebSocket("wss://javascript.info/article/websocket/demo/hello");
 
 socket.onopen = function(e) {
-  alert("[open] зеднання встановлено");
-  alert("Вдправляемо данні на сервер");
+  alert("[open] з'єднання встановлено");
+  alert("Відправляємо данні на сервер");
   socket.send("Моє ім'я Кирило");
 };
 
 socket.onmessage = function(event) {
-  alert(`[message] Данні отримані з сервера: ${event.data}`);
+  alert(`[message] Дані отримані з сервера: ${event.data}`);
 };
 
 socket.onclose = function(event) {
   if (event.wasClean) {
-    alert(`[close] Зеднання закрито, код=${event.code} причина=${event.reason}`);
+    alert(`[close] З'єднання закрито, код=${event.code} причина=${event.reason}`);
   } else {
-      alert('[close] Зеднання прервано');
+      alert('[close] З'єднання перервано');
   }
 };
 
@@ -152,7 +152,7 @@ socket.onerror = function(error) {
 
 Ось приклад заголовків для запиту, що робить `new WebSocket("wss://javascript.info/chat")`.
 
-```
+```javascript
 GET /chat
 Host: javascript.info
 Origin: https://javascript.info
@@ -176,7 +176,7 @@ Sec-WebSocket-Version: 13
 
 Якщо сервер згоден перейти на WebSocket, то він повинен відправити у відповідь код 101:
 
-```
+```javascript
 101 Switching Protocols
 Upgrade: websocket
 Connection: Upgrade
@@ -206,7 +206,7 @@ Sec-WebSocket-Accept: hsBlbuDTkk24srzEOTBUlZAlC2g=
 
 Наприклад, запит:
 
-```
+```javascript
 GET /chat
 Host: javascript.info
 Upgrade: websocket
@@ -220,7 +220,7 @@ Sec-WebSocket-Protocol: soap, wamp
 
 Відповідь:
 
-```
+```javascript
 101 Switching Protocols
 Upgrade: websocket
 Connection: Upgrade
@@ -257,7 +257,7 @@ Blob – це високорівневий бінарний об'єкт, він 
 ```javascript
 socket.binaryType = "arraybuffer";
 socket.onmessage = (event) => {
-  // event.data является строкой (если текст) или arraybuffer (если двоичные данные)
+  // event.data є рядком (якщо текст) або arraybuffer (якщо двійкові дані)
 };
 ```
 
@@ -272,8 +272,8 @@ socket.onmessage = (event) => {
 Ми можемо вивчити його, щоб побачити, чи дійсно сокет доступний для передачі.
 
 ```javascript
-// каждые 100мс проверить сокет и отправить больше данных,
-// только если все текущие отосланы
+// кожні 100мс перевірити сокет і надіслати більше даних,
+// тільки якщо всі поточні надіслані
 setInterval(() => {
   if (socket.bufferedAmount == 0) {
     socket.send(moreData());
@@ -297,13 +297,13 @@ socket.close([code], [reason]);
 Потім протилежна сторона в обробнику події `close`отримає код `code`і причину `reason`, наприклад:
 
 ```javascript
-// закривающая сторона:
+// закриваюча сторона:
 socket.close(1000, "работа закончена");
 
 // інша сторона:
 socket.onclose = event => {
   // event.code === 1000
-  // event.reason === "работа закінчено"
+  // event.reason === "работа закінчена"
   // event.wasClean === true (закрито)
 };
 ```
@@ -327,11 +327,11 @@ socket.onclose = event => {
 Коди WebSocket чимось схожі на коди HTTP, але вони різні. Зокрема, будь-які коди менше `1000`зарезервовані. Якщо спробуємо встановити такий код, то отримаємо помилку.
 
 ```javascript
-// ящо зденання сброшено
+// якщо з'єднання перервалось
 socket.onclose = event => {
   // event.code === 1006
   // event.reason === ""
-  // event.wasClean === false (нема закривающего кадра)
+  // event.wasClean === false (немає закриваючого кадру)
 };
 ```
 
@@ -351,13 +351,13 @@ socket.onclose = event => {
 HTML: нам потрібна форма `<form>`для надсилання даних та `<div>`для відображення повідомлень:
 
 ```html
-<!-- форма сообщений -->
+<!-- форма повідомлень -->
 <form name="publish">
   <input type="text" name="message">
   <input type="submit" value="Отправить">
 </form>
 
-<!-- div с сообщениями -->
+<!-- div з повідомленнями -->
 <div id="messages"></div>
 ```
 
@@ -406,8 +406,7 @@ const wss = new ws.Server({noServer: true});
 const clients = new Set();
 
 http.createServer((req, res) => {
-  // в реальном проекте здесь может также быть код для обработки отличных от websoсket-запросов
-  // здесь мы работаем с каждым запросом как с веб-сокетом
+
   wss.handleUpgrade(req, req.socket, Buffer.alloc(0), onSocketConnect);
 });
 
@@ -415,7 +414,7 @@ function onSocketConnect(ws) {
   clients.add(ws);
 
   ws.on('message', function(message) {
-    message = message.slice(0, 50); // максимальный размер сообщения 50
+    message = message.slice(0, 50); // максимальний розмір повідомлення 50
 
     for(let client of clients) {
       client.send(message);
