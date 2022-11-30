@@ -13,7 +13,6 @@
   * [Lesson 7 - Користувачі, авторизація](node-js/lesson-7-koristuvachi-avtorizaciya.md)
   * [Lesson 8 - Покращуємо додаток](node-js/lesson-8-uluchshaem-prilozhenie.md)
   * [Lesson 9 - Чаты, завантаження  та обмін даними](node-js/lesson-9-chaty-nepreryvnaya-podgruzka-i-obmen-dannymi.md)
-  * [Lesson 10 - Развёртывание и запуск приложения](node-js/lesson-10-razvyortyvanie-i-zapusk-prilozheniya.md)
 * [Home Work](home-work/README.md)
   * [Home Work 1](home-work/home-work-1.md)
   * [Home Work 2](home-work/home-work-2.md)
